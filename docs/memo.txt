@@ -1,0 +1,38 @@
+1. dependencies
+	'org.springframework.boot:spring-boot-starter-web' > 스프링 웹서비스를 만들기위한 메인 패키지
+	'org.springframework.boot:spring-boot-starter-test' > 스프링 테스트 코드를 작성하기위한 패키지
+	'org.springframework.boot:spring-boot-devtools' > 개발시 코드의 변화를 감지하여 서버를 자동 실행하는 패키지(live server)
+	'org.projectlombok:lombok' > 편의성 코드의 작성을 도와주는 패키지
+  'org.springframework.boot:spring-boot-starter-data-jpa' > 스프링진영 대표 OOP 패키지
+	'org.postgresql:postgresql' > postgresql 데이터베이스 드라이버 패키지
+
+2. 웹 애플리케이션 계층구조
+  controller 
+    > http 요청과 응답을 담당
+  service 
+    > 핵심 비즈니스 로직
+  domain 
+    > 비즈니스 객체
+  repository 
+    > 데이터베이스에 점근
+    > 저장소?(데이터베이스와 관련)
+    > 데이터단에 매칭되는 Entity를 통해 데이터 테이블이 생성되면, 받아온 정보를 데이터베이스(postgre sql)에 저장하고 조회하는 기능
+
+3. REST API
+  API
+    코드를 기반으로 요청에 대한 응답결과가 있는 것?
+  REST API
+    HTTP(WEB) 통신 안에서의 API
+    > GET: SELECT
+    > POST: INSERT
+    > PUT: UPDATE(전체 수정)
+    > PATCH: UPDATE(일부 수정)
+    > DELETE: DELETE
+
+4. gradle
+	gradle은 빌드 자동화 툴이고 각종 명령어를 통해 빌드할 수 있습니다
+	gradlew는 gradle을 설치하지 않고 명령어를 실행하며 프로젝트를 만든 시점의 gradle버전이 유지되기에 gradlew를 사용해야 합니다
+		./gradlew bootRun > 프로젝트 실행
+		./gradlew build > 프로젝트 빌드
+		./gradlew jar > 프로젝트 패키징
+		./gradlew clean > 빌드파일을 초기화 합니다
