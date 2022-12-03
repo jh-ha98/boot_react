@@ -13,6 +13,7 @@ import lombok.ToString;
 @ToString
 @Entity
 public class Member {
+
     @Id
     @GeneratedValue
     @Column
@@ -21,7 +22,7 @@ public class Member {
     @Column(unique = true, nullable = false)
     private String loginId;
 
-    @Column(length = 50, nullable = false)
+    @Column(nullable = false)
     private String password;
 
     @Column(length = 50, unique = true)

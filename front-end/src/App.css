@@ -1,14 +1,22 @@
 #root {
   height: 100vh;
+
+  /* 컨테이너 공간 맞추기 */
   display: flex;
+
+  /*flex-direction : row (기본값, 가로가 중심축)  */
+  /*flex-direction : column (세로가 중심축, 위에서 아래로)  */
   flex-direction: column;
 }
 
 #root #main-header {
-  background-color: blueviolet;
+  background-color: mediumpurple;
   display: flex;
   height: 3rem;
+
+  /* 중심축에서 아이템 배치 */
   justify-content: center;
+
   flex-direction: column;
   color: whitesmoke;
 }
@@ -19,7 +27,10 @@
 
 #root #top-bar-wrap {
   display: flex;
+
+  /* 아이템 사이에 간격 맞추기 */
   justify-content: space-between;
+
   margin: 1rem;
 }
 
@@ -29,10 +40,102 @@
 }
 
 #root #side-bar {
-  background-color: mediumpurple;
+  background-color: rgb(177, 149, 233);
   width: 15rem;
 }
 
 #root #main-content {
   flex: 1;
 }
+
+#root #sign-in-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: .5rem;
+}
+
+#root #sign-in-inner-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+#root #sign-in-form {
+  height: 20rem;
+  padding: 2rem;
+  width: 25rem;
+  background-color: mediumpurple;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#root #sign-in-form label {
+  margin: 0;
+  padding: .3rem;
+  display: block;
+  font-weight: bolder;
+  color: rgb(209, 191, 245);
+}
+
+#root #sign-in-form input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: .5rem;
+  border-radius: .5rem;
+  border: 0;
+}
+
+#root #sign-in-form button {
+  width: 100%;
+  padding: .5rem;
+  border-radius: 1rem;
+  border: 0;
+  background-color: rgb(209, 191, 245);
+  color: whitesmoke;
+  font-weight: bolder;
+  font-size: 2rem;
+}
+
+#root #sign-up-form {
+  height: 20rem;
+  padding: 2rem;
+  width: 25rem;
+  background-color: mediumpurple;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#root #sign-up-form input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: .5rem;
+  border-radius: .5rem;
+  border: 0;
+}
+
+#root #sign-up-form label {
+  margin: 0;
+  padding: .3rem;
+  display: block;
+  font-weight: bolder;
+  color: rgb(209, 191, 245);
+}
+
+#root #sign-up-form button {
+  width: 100%;
+  padding: .5rem;
+  border-radius: 1rem;
+  border: 0;
+  background-color: rgb(209, 191, 245);
+  color: whitesmoke;
+  font-weight: bolder;
+  font-size: 2rem;
+}
+

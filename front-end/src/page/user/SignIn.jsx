@@ -37,11 +37,19 @@ const SignIn = () => {
   }
 
   return (
-    <form>
-      <p>id: <input ref={loginIdRef} /></p>
-      <p>password: <input type='password' ref={passwordRef} /></p>
-      <button type='buutton' onClick={onClickLogin}>로그인</button>
-    </form>
+    <section id='sign-in-wrap'>
+      <div id='sign-in-inner-wrap'>
+        <form id='sign-in-form'>
+          <div id='input-wrap'>
+            <label htmlFor='login-id'>ID</label>
+            <input id='login-id' ref={loginIdRef} />
+            <label>Password</label>
+            <input type='password' ref={passwordRef} />
+          </div>
+          <button type='buutton' onClick={onClickLogin}>로그인</button>
+        </form>
+      </div>
+    </section>
   );
 };
 
