@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import Loading from '../component/Loading';
 
 const Home = () => {
@@ -8,13 +8,12 @@ const Home = () => {
 
   useEffect(() => {
     axios.get('/api/member/info')
+      .catch((error) => error.response)
       .then((res) => {
         console.log(res.data?.body);
         setMember(res.data?.body);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => console.log(error));
   }, []);
 
   const onClickSignOut = () => {
@@ -42,13 +41,22 @@ const Home = () => {
             {member === null ? <Link to='/user/sign-in'>로그인</Link> : ''}
             {member === null ? <Link to='/user/sign-up'>회원가입</Link> : ''}
             {!(member === null) ? '환영합니다' : ''}
-            {!(member === null) ? <button onClick={onClickSignOut}>로그아웃</button> : ''}
+            {!(member === null) ? <button className='button-sign-out' onClick={onClickSignOut}>로그아웃</button> : ''}
           </div>
         </div>
       </header>
       <section id='content-wrap'>
-        <nav id='side-bar'>사이드 바</nav>
-        <section id='main-content'>메인 콘텐츠</section>
+        <nav id='side-bar'>
+          <li>
+            <Link to='/board/board-list'>게시판 리스트</Link>
+          </li>
+          <li>
+            <Link to='/board/write-form'>게시판 글 작성</Link>
+          </li>
+        </nav>
+        <section id='main-content'>
+          <Outlet />
+        </section>
       </section>
     </>
   );

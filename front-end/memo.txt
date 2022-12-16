@@ -18,3 +18,5 @@ const App=() =>{
     )
 }
 
+Event.preventDefault(): 기본 동작을 실행하지 않도록 지정 => evemt에서 사용
+

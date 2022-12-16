@@ -73,9 +73,11 @@ const SignUp = () => {
       <div id='sign-in-inner-wrap'>
         <form id='sign-up-form'>
           <div id='input-wrap'>
-            <label htmlFor='signUp-id'> ID </label>
-            <input id='signUp-id' ref={loginIdRef} value={loginId} onChange={onChangeLoginId} />
-            <input type='button' value='중복확인' onClick={onClickCheckId} />
+            <label htmlFor='sign-up-id'>ID</label>
+            <div className='id-box'>
+              <input id='sign-up-id' ref={loginIdRef} value={loginId} onChange={onChangeLoginId} />
+              <input className='button-check-id' type='button' value='중복확인' onClick={onClickCheckId} />
+            </div>
             <label>Password</label>
             <input ref={passwordRef} type='password' />
             <label>Email</label>
