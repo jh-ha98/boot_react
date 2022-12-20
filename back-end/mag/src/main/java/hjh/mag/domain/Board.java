@@ -9,12 +9,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
-public class Board {
-  
+public class Board extends EntityBase {
+
   @Id
   @GeneratedValue
   @Column

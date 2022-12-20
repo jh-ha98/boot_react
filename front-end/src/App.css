@@ -39,18 +39,9 @@
   margin: 1rem;
 }
 
-#root #content-wrap {
-  flex: 1;
-  display: flex;
-}
-
 #root #side-bar {
   background-color: rgb(177, 149, 233);
   width: 15rem;
-}
-
-#root #main-content {
-  flex: 1;
 }
 
 #root #sign-in-wrap {

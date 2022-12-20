@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import React from "react";
 import { useState } from "react";
@@ -7,7 +6,6 @@ import { Navigate } from "react-router-dom";
 
 const WriteForm = () => {
   const [list, setList] = useState();
-  const memberRef = useRef();
   const titleRef = useRef();
   const contentRef = useRef();
 
@@ -15,7 +13,6 @@ const WriteForm = () => {
     event.preventDefault()
 
     const param = {
-      writer: memberRef.current.value,
       title: titleRef.current.value,
       content: contentRef.current.value
     };
@@ -32,17 +29,15 @@ const WriteForm = () => {
       })
   }
 
-  if (list) {
-    return (
-      <Navigate to="/board/board-list" replace={true} />
-    )
-  }
+  // if (list) {
+  //   return (
+  //     <Navigate to="/board/board-list" replace={true} />
+  //   )
+  // }
 
   return (
     <div>
       <form>
-        <label>작성자</label>
-        <input type='text' ref={memberRef} />
         <label>제목</label>
         <input type='text' ref={titleRef} />
         <label>내용</label>

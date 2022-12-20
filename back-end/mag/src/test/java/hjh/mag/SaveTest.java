@@ -16,22 +16,22 @@ import hjh.mag.repository.BoardRepository;
 @Transactional
 public class SaveTest {
 
-    @Autowired
-    private BoardRepository boardRepository;
+  @Autowired
+  private BoardRepository boardRepository;
 
-    @DisplayName("spring jpa insert 테스트")
-    @Test
-    public void insertBoard() {
-        Board board = new Board();
-        board.setTitle("1234");
-        board.setContent("1234");
-        board.setMember(null);
-        board.setId(null);
+  @DisplayName("spring jpa insert 테스트")
+  @Test
+  public void insertBoard() {
+    Board board = new Board();
+    board.setTitle("1234");
+    board.setContent("1234");
+    board.setMember(null);
+    board.setId(null);
 
-        Board savedBoard = boardRepository.save(board);
+    Board savedBoard = boardRepository.save(board);
 
-        //클래스 동등 비교
-        assertInstanceOf(Board.class, savedBoard);
-    }
+    // 클래스 동등 비교
+    assertInstanceOf(Board.class, savedBoard);
+  }
 
 }

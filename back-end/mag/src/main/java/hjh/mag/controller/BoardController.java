@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,11 @@ public class BoardController {
   public List<BoardInfo> boardList() {
     return boardService.getBoard();
   }
+
+  @GetMapping("/board/board-list/{boardId}")
+  public List<BoardInfo> boardListDetail(@PathVariable("boardId") Long boardId) {
+    return boardService.getBoard();
+  } 
 
   @PostMapping("/board/write-form")
   public ResponseEntity<MessageBox> boardWrite(@RequestBody Board board, HttpServletRequest request) throws Exception {

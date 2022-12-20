@@ -8,12 +8,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data // @Getter, @Setter, @RequiredArgsConstructor, @ToString, @EqualsAndHashCode
+// @Data // @Getter, @Setter, @RequiredArgsConstructor, @ToString, @EqualsAndHashCode
 // 어노테이션을 한꺼번에 설정해주는 어노테이션
+// @EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
+@ToString
 @Entity
-public class Member {
+public class Member extends EntityBase {
 
     @Id
     @GeneratedValue

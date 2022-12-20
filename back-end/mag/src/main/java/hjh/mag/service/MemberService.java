@@ -27,13 +27,13 @@ public class MemberService {
   public MessageBox signUp(Member member) throws Exception {
     try {
       if (member.getLoginId().equals("")) {
-        return new MessageBox(Valid.False, "아이디를 입력해주세요.", null);
+        return new MessageBox(Valid.False, "아이디를 입력해주세요.");
       }
       if (member.getPassword().equals("")) {
-        return new MessageBox(Valid.False, "비밀번호를 입력해주세요.", null);
+        return new MessageBox(Valid.False, "비밀번호를 입력해주세요.");
       }
       if (member.getEmail().equals("")) {
-        return new MessageBox(Valid.False, "이메일을 입력해주세요.", null);
+        return new MessageBox(Valid.False, "이메일을 입력해주세요.");
       }
 
       MessageBox checkResult = checkMember(member);
@@ -49,7 +49,7 @@ public class MemberService {
     } catch (Exception e) {
       log.error("signUp error:", e);
 
-      return new MessageBox(Valid.False, "알수없는 에러.", null);
+      return new MessageBox(Valid.False, "알수없는 에러.");
 
     }
   }
@@ -57,10 +57,10 @@ public class MemberService {
   public MessageBox signIn(Member member, HttpServletRequest request) throws Exception {
     try {
       if (member.getLoginId().equals("")) {
-        return new MessageBox(Valid.False, "아이디를 입력해주세요.", null);
+        return new MessageBox(Valid.False, "아이디를 입력해주세요.");
       }
       if (member.getPassword().equals("")) {
-        return new MessageBox(Valid.False, "비밀번호를 입력해주세요.", null);
+        return new MessageBox(Valid.False, "비밀번호를 입력해주세요.");
       }
 
       Member findMember = memberRepository.findByLoginId(member.getLoginId()).orElse(new Member());
@@ -75,12 +75,12 @@ public class MemberService {
         session.setAttribute(SESSION_KEY, findMember);
         return new MessageBox(Valid.True, "로그인 성공!", findMember);
       }
-      return new MessageBox(Valid.False, "로그인 실패", null);
+      return new MessageBox(Valid.False, "로그인 실패");
 
     } catch (Exception e) {
       log.error("signIn error:", e);
 
-      return new MessageBox(Valid.False, "알수없는 에러.", null);
+      return new MessageBox(Valid.False, "알수없는 에러.");
     }
   }
 
@@ -99,13 +99,13 @@ public class MemberService {
 
     } catch (Exception e) {
       log.error("checkId error:", e);
-      return new MessageBox(Valid.False, "알수없는 에러.", null);
+      return new MessageBox(Valid.False, "알수없는 에러.");
     }
   }
 
   private MessageBox checkMember(Member member) {
     if (member.getLoginId().equals("")) {
-      return new MessageBox(Valid.False, "아이디를 입력해주세요.", null);
+      return new MessageBox(Valid.False, "아이디를 입력해주세요.");
     }
 
     List<Member> findMembers = memberRepository.findByLoginIdOrEmail(member.getLoginId(), member.getEmail());
@@ -114,11 +114,11 @@ public class MemberService {
     // Member findMember = findMembers.get(i);
     for (Member findMember : findMembers) {
       if (member.getLoginId().equals(findMember.getLoginId())) {
-        return new MessageBox(Valid.False, "이미 존재하는 아이디 입니다.", null);
+        return new MessageBox(Valid.False, "이미 존재하는 아이디 입니다.");
       }
 
       if (member.getEmail().equals(findMember.getEmail())) {
-        return new MessageBox(Valid.False, "이미 존재하는 이메일 입니다.", null);
+        return new MessageBox(Valid.False, "이미 존재하는 이메일 입니다.");
       }
     }
 

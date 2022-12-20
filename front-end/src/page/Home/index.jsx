@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
-import Loading from '../component/Loading';
+import Loading from '../../component/Loading';
+import style from './style.module.css';
 
 const Home = () => {
   const [member, setMember] = useState();
@@ -45,7 +46,7 @@ const Home = () => {
           </div>
         </div>
       </header>
-      <section id='content-wrap'>
+      <section className={style.wrap}>
         <nav id='side-bar'>
           <li>
             <Link to='/board/board-list'>게시판 리스트</Link>
@@ -54,7 +55,7 @@ const Home = () => {
             <Link to='/board/write-form'>게시판 글 작성</Link>
           </li>
         </nav>
-        <section id='main-content'>
+        <section className={style['inner-wrap']}>
           <Outlet />
         </section>
       </section>
