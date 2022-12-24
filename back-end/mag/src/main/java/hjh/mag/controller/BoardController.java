@@ -35,9 +35,9 @@ public class BoardController {
   }
 
   @GetMapping("/board/board-list/{boardId}")
-  public List<BoardInfo> boardListDetail(@PathVariable("boardId") Long boardId) {
-    return boardService.getBoard();
-  } 
+  public BoardInfo boardListDetail(@PathVariable("boardId") Long boardId) {
+    return boardService.getBoardDetail(boardId);
+  }
 
   @PostMapping("/board/write-form")
   public ResponseEntity<MessageBox> boardWrite(@RequestBody Board board, HttpServletRequest request) throws Exception {

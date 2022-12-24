@@ -7,6 +7,7 @@ import style from "./style.module.css";
 
 const BoardList = () => {
   const [boardList, setBoardList] = useState([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     axios.get('/api/board/board-list')
@@ -20,18 +21,27 @@ const BoardList = () => {
       })
   }, []);
 
+  const onChangeSearch = (event) => {
+    event.preventDefault();
+    setSearch(event.target.value);
+  }
+
   return (
     <div>
+      <div className={style.search}>
+        <input className={style['search-input']} type="text" value={search} placeholder="검색" onChange={onChangeSearch} />
+      </div>
       <Link to={'/board/write-form'}>
-        <button >글 작성</button>
+        <button className={style.write}>글 작성</button>
       </Link>
-      {boardList.map((board, index) =>
-        // <tr key={index}>
-        //   <td> {index + 1}</td>
-        //   <td> {board.title}</td>
-        //   <td> {board.content}</td>
-        //   <td> {board.memberId}</td>
-        // </tr>
+
+      {boardList.filter((value) => {
+        if (search === "") {
+          return value;
+        } else if (value.title.toLowerCase().includes(search.toLowerCase())) {
+          return value;
+        }
+      }).map((board, index) =>
         <div key={index} className={style.wrap}>
           <div>
             <Link to={`/board/board-list/` + board.boardId}>{board.title}</Link>

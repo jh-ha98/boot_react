@@ -51,9 +51,6 @@ const Home = () => {
           <li>
             <Link to='/board/board-list'>게시판 리스트</Link>
           </li>
-          <li>
-            <Link to='/board/write-form'>게시판 글 작성</Link>
-          </li>
         </nav>
         <section className={style['inner-wrap']}>
           <Outlet />

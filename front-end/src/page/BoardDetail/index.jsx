@@ -4,12 +4,12 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 const BoardDetail = () => {
-  const [boardDetail, setBoardDetail] = useState();
+  const [boardDetail, setBoardDetail] = useState({});
   const params = useParams();
-  console.log(params);
 
   useEffect(() => {
     const boardId = params.boardId;
+
     axios.get(`/api/board/board-list/${boardId}`)
       .then((res) => {
         const boardData = res.data;
@@ -18,15 +18,18 @@ const BoardDetail = () => {
       })
       .catch((error) => {
         console.error(error);
-      })
-  });
+      });
+  }, []);
 
   return (
     <div>
-      {params.boardId}
+      <div>제목</div>
+      <div>{boardDetail.title}</div>
+      <div>{boardDetail.content}</div>
+      <div>{boardDetail.createTime}</div>
     </div>
-
   )
 
 }
+
 export default BoardDetail;
