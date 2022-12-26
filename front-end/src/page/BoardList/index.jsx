@@ -10,7 +10,7 @@ const BoardList = () => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    axios.get('/api/board/board-list')
+    axios.get('/api/board/list')
       .then((res) => {
         const boardData = res.data;
         console.log(boardData);
@@ -31,7 +31,7 @@ const BoardList = () => {
       <div className={style.search}>
         <input className={style['search-input']} type="text" value={search} placeholder="검색" onChange={onChangeSearch} />
       </div>
-      <Link to={'/board/write-form'}>
+      <Link to={'/board/write'}>
         <button className={style.write}>글 작성</button>
       </Link>
 
@@ -44,7 +44,7 @@ const BoardList = () => {
       }).map((board, index) =>
         <div key={index} className={style.wrap}>
           <div>
-            <Link to={`/board/board-list/` + board.boardId}>{board.title}</Link>
+            <Link to={`/board/list/` + board.boardId}>{board.title}</Link>
           </div>
           <div>{board.content}</div>
         </div>

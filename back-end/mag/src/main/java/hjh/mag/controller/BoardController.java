@@ -29,17 +29,17 @@ public class BoardController {
 
   private final BoardService boardService;
 
-  @GetMapping("/board/board-list")
+  @GetMapping("/board/list")
   public List<BoardInfo> boardList() {
     return boardService.getBoard();
   }
 
-  @GetMapping("/board/board-list/{boardId}")
+  @GetMapping("/board/list/{boardId}")
   public BoardInfo boardListDetail(@PathVariable("boardId") Long boardId) {
     return boardService.getBoardDetail(boardId);
   }
 
-  @PostMapping("/board/write-form")
+  @PostMapping("/board/write")
   public ResponseEntity<MessageBox> boardWrite(@RequestBody Board board, HttpServletRequest request) throws Exception {
     MessageBox result = boardService.write(board, request);
     Valid valid = (Valid) result.getValid();

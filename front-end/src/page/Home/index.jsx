@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import Loading from '../../component/Loading';
+import buttonStyle from "../../style/buttons.module.css";
 import style from './style.module.css';
 
 const Home = () => {
@@ -42,14 +43,14 @@ const Home = () => {
             {member === null ? <Link to='/user/sign-in'>로그인</Link> : ''}
             {member === null ? <Link to='/user/sign-up'>회원가입</Link> : ''}
             {!(member === null) ? '환영합니다' : ''}
-            {!(member === null) ? <button className='button-sign-out' onClick={onClickSignOut}>로그아웃</button> : ''}
+            {!(member === null) ? <button className={buttonStyle['default-button']} onClick={onClickSignOut}>로그아웃</button> : ''}
           </div>
         </div>
       </header>
       <section className={style.wrap}>
         <nav id='side-bar'>
           <li>
-            <Link to='/board/board-list'>게시판 리스트</Link>
+            <Link to='/board/list'>게시판 리스트</Link>
           </li>
         </nav>
         <section className={style['inner-wrap']}>
