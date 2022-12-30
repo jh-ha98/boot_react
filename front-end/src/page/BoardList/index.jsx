@@ -1,8 +1,10 @@
+/* eslint-disable */
 import axios from "axios";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Link } from 'react-router-dom';
+import buttonStyle from "../../style/buttons.module.css";
 import style from "./style.module.css";
 
 const BoardList = () => {
@@ -32,7 +34,7 @@ const BoardList = () => {
         <input className={style['search-input']} type="text" value={search} placeholder="검색" onChange={onChangeSearch} />
       </div>
       <Link to={'/board/write'}>
-        <button className={style.write}>글 작성</button>
+        <button className={buttonStyle['default-button']}>글 작성</button>
       </Link>
 
       {boardList.filter((value) => {

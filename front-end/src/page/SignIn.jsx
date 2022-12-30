@@ -19,7 +19,6 @@ const SignIn = () => {
       .then((res) => {
         const member = res.data.body;
         console.log(res);
-        console.log(member)
         alert(res.data.msg);
         setMember(member);
       })

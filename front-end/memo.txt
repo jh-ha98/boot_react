@@ -20,3 +20,51 @@ const App=() =>{
 
 Event.preventDefault(): 기본 동작을 실행하지 않도록 지정 => evemt에서 사용
 
+<<전개구문 사용하기>>
+BoardDetail의 댓글다는 부분에서
+const onClickComment = () => {
+    const param = {
+      boardId: params.boardId,
+      comment: commentRef.current.value,
+    };
+
+    axios.post('/api/comment/write', null, { params: param })
+      .then((res) => {
+        console.log(res);
+        const comment = res.data.body;
+
+        // const newData = {};
+        // newData.boardId = boardDetail.boardId;
+        // newData.title = boardDetail.title;
+        // newData.content = boardDetail.content;
+        // newData.memberId = boardDetail.memberId;
+        // newData.email = boardDetail.email;
+        // newData.createTime = boardDetail.createTime;
+        // newData.createTimeStr = boardDetail.createTimeStr;
+        // newData.comments = [];
+
+        // for (const comment of boardDetail.comments)
+        //   newData.comments.push(comment);
+
+        // newData.comments.push(comment);
+
+                ↓   ↓
+
+        // solution 전개구문 사용하기(하나하나 복사해서 새로 생성하는 것보다 통째로 복사해서 새로운 배열 만들어서 넣기)
+        const newData = {
+          ...boardDetail,
+          comments: [
+            ...boardDetail.comments,
+            comment
+          ]
+        };
+
+        setBoardDetail(newData);
+        alert(res.data.msg);
+      })
+      .catch((err) => {
+        console.error(err);
+        alert(err.response.data.msg);
+      });
+  };
+

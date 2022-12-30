@@ -1,8 +1,5 @@
 package hjh.mag.service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,30 +24,13 @@ public class BoardService {
   private final MemberService memberService;
 
   public List<BoardInfo> getBoard() {
-    // return boardRepository.findAll().stream().map(board -> new BoardInfo(board)).toList();
-
     List<Board> boards = boardRepository.findAll();
-
-    List<BoardInfo> boardInfos = new ArrayList<>();
-    for (Board board : boards) {
-      BoardInfo boardInfo = new BoardInfo(board);
-      LocalDateTime createTime = boardInfo.getCreateTime();
-
-      if (createTime != null) {
-        String createTimeStr = createTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        boardInfo.setCreateTimeStr(createTimeStr);
-      }
-
-      boardInfos.add(boardInfo);
-    }
-
-    return boardInfos;
-
+    return BoardInfo.generate(boards, false);
   }
 
   public BoardInfo getBoardDetail(Long boardId) {
     Board findBoard = boardRepository.findById(boardId).orElse(new Board());
-    return new BoardInfo(findBoard);
+    return BoardInfo.generate(findBoard, true);
   }
 
   public MessageBox write(Board board, HttpServletRequest request) throws Exception {

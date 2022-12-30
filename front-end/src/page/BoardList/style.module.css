@@ -19,9 +19,8 @@
 }
 
 .search-input:focus {
-  outline: none !important;
-  border-color: #d6a8e9;
-  box-shadow: 0 0 10px #d6a8e9;
+  outline: none;
+  box-shadow: 0 0 0 .2rem rgb(103, 64, 182);
+  transition: all .2s;
 }
 
-.write {}

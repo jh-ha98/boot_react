@@ -6,13 +6,13 @@ import { Navigate } from "react-router-dom";
 import buttonStyle from "../../style/buttons.module.css";
 import style from "./style.module.css";
 
-const WriteForm = () => {
+const BoardWrite = () => {
   const [list, setList] = useState();
   const titleRef = useRef();
   const contentRef = useRef();
 
   const onClicWrite = (event) => {
-    event.preventDefault()
+    event.preventDefault();
 
     const param = {
       title: titleRef.current.value,
@@ -20,14 +20,15 @@ const WriteForm = () => {
     };
 
     axios.post('/api/board/write', param)
-      .then((res) => {
+      .then((res) => {  
         const board = res.data.body;
         console.log(res);
         alert(res.data.msg);
         setList(board);
       })
-      .catch((error) => {
-        console.error(error);
+      .catch((err) => {
+        console.error(err);
+        alert(err.response.data.msg);
       });
   }
 
@@ -51,4 +52,4 @@ const WriteForm = () => {
   </>;
 };
 
-export default WriteForm;
+export default BoardWrite;

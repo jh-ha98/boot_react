@@ -42,7 +42,7 @@ const Home = () => {
           <div>
             {member === null ? <Link to='/user/sign-in'>로그인</Link> : ''}
             {member === null ? <Link to='/user/sign-up'>회원가입</Link> : ''}
-            {!(member === null) ? '환영합니다' : ''}
+            {!(member === null) ? member.loginId + '님 환영합니다' : ''}
             {!(member === null) ? <button className={buttonStyle['default-button']} onClick={onClickSignOut}>로그아웃</button> : ''}
           </div>
         </div>

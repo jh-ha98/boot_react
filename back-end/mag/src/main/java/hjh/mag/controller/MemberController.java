@@ -38,8 +38,7 @@ public class MemberController {
   }
 
   @PostMapping("/member/sign-in")
-  public ResponseEntity<MessageBox> signIn(@RequestBody Member member, HttpServletRequest request)
-      throws Exception {
+  public ResponseEntity<MessageBox> signIn(@RequestBody Member member, HttpServletRequest request) throws Exception {
     MessageBox result = memberService.signIn(member, request);
     Valid valid = (Valid) result.getValid();
     if (valid == Valid.False)
