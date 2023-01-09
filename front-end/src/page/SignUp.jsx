@@ -75,7 +75,7 @@ const SignUp = () => {
           <div id='input-wrap'>
             <label htmlFor='sign-up-id'>ID</label>
             <div className='id-box'>
-              <input id='sign-up-id' ref={loginIdRef} value={loginId} onChange={onChangeLoginId} />
+              <input id='sign-up-id' ref={loginIdRef} value={loginId} onChange={onChangeLoginId} autoFocus/>
               <input className='button-check-id' type='button' value='중복확인' onClick={onClickCheckId} />
             </div>
             <label>Password</label>

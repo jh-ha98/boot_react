@@ -43,7 +43,7 @@ public class CommentService {
 
       Comment savedComment = commentRepository.save(comment);
 
-      return new MessageBox(Valid.True, "댓글이 작성 되었습니다.", new CommentInfo(savedComment));
+      return new MessageBox(Valid.True, "댓글이 작성 되었습니다.", CommentInfo.generate(savedComment));
 
     } catch (Exception e) {
       log.error("commentSave error", e);

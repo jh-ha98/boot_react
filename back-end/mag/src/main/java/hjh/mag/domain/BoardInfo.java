@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)  //아무런 매개변수가 없는 생성자 (외부 클래스 접근 제한)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BoardInfo {
 
   private Long boardId;
@@ -24,6 +24,7 @@ public class BoardInfo {
 
   /** BoardInfo를 생성합니다 */
   public static BoardInfo generate(Board board, Boolean fetchComments) {
+    // fetchComments: false -> 안필요하면 안가지고 옴
     BoardInfo boardInfo = new BoardInfo();
 
     boardInfo.boardId = board.getId();
@@ -52,7 +53,7 @@ public class BoardInfo {
 
   private void setCreateTime(LocalDateTime createTime) {
     this.createTime = createTime;
-    this.setCreateTimeStr();
+    setCreateTimeStr();
   }
 
   /** createTime을 문자열로 변환합니다 */
@@ -70,7 +71,7 @@ public class BoardInfo {
 
     List<CommentInfo> commentInfos = new ArrayList<>();
     for (Comment comment : comments)
-      commentInfos.add(new CommentInfo(comment));
+      commentInfos.add(CommentInfo.generate(comment));
 
     this.comments = commentInfos;
   }

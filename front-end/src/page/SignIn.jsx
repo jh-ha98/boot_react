@@ -10,6 +10,7 @@ const SignIn = () => {
   const onClickLogin = (event) => {
     event.preventDefault();
 
+
     const param = {
       loginId: loginIdRef.current.value,
       password: passwordRef.current.value
@@ -41,7 +42,7 @@ const SignIn = () => {
         <form id='sign-in-form'>
           <div id='input-wrap'>
             <label htmlFor='login-id'>ID</label>
-            <input id='login-id' ref={loginIdRef} />
+            <input id='login-id' ref={loginIdRef} autoFocus />
             <label>Password</label>
             <input type='password' ref={passwordRef} />
           </div>

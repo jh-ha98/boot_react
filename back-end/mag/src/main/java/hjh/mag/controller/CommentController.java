@@ -23,6 +23,7 @@ public class CommentController {
 
   private final CommentService commentService;
 
+  /* 댓글 작성 */
   @PostMapping("/comment/write")
   /** 어노테이션 없이 String 등의 Request와 관련 없는 타입의 파라미터가 선언되었을 경우는 @RequestParam(required=false, value={변수명})와 같음 */
   public ResponseEntity<MessageBox> commentSave(String comment, Long boardId, HttpServletRequest request)

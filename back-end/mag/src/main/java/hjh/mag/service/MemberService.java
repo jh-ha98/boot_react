@@ -68,8 +68,6 @@ public class MemberService {
       if (passwordEncoder.matches(member.getPassword(), findMember.getPassword())) {
         findMember.setPassword(null);
 
-        // return new MessageBox(Valid.True, "로그인 성공!", findMember);
-
         // 세션에 로그인정보(Member 객체) 등록
         HttpSession session = request.getSession();
         session.setAttribute(SESSION_KEY, findMember);
@@ -132,9 +130,9 @@ public class MemberService {
       HttpSession session = request.getSession();
       session.invalidate();
 
-      return new MessageBox(Valid.True, "로그아웃 되엇습니다.", null);
+      return new MessageBox(Valid.True, "로그아웃 되엇습니다.");
     } catch (Exception e) {
-      return new MessageBox(Valid.False, "로그아웃 실패", null);
+      return new MessageBox(Valid.False, "로그아웃 실패");
     }
 
   }
@@ -151,7 +149,7 @@ public class MemberService {
 
     Member sessionMember = getSessionMember(request);
     if (sessionMember == null) {
-      return new MessageBox(Valid.False, "로그인 되어있지 않습니다.", null);
+      return new MessageBox(Valid.False, "로그인 되어있지 않습니다.");
     }
 
     return new MessageBox(Valid.True, "로그인 성공", sessionMember);

@@ -1,6 +1,6 @@
 /* eslint-disable */
 import axios from "axios";
-import React from "react";
+import React, { useMemo } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Link } from 'react-router-dom';
@@ -28,6 +28,22 @@ const BoardList = () => {
     setSearch(event.target.value);
   }
 
+  const onClickDelete = (boardId) => () => {
+    axios.delete(`/api/board/delete/${boardId}`)
+      .then((res) => {
+        const newBoardList = [...boardList];
+        setBoardList(newBoardList.filter(boards => boards.boardId !== boardId));
+        alert(res.data.msg);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error.response.data.msg);
+      });
+  };
+
+  const filteredList = useMemo(() =>
+    boardList.filter((board) => board.title.toLowerCase().includes(search.toLowerCase())), [boardList, search]);
+
   return (
     <div>
       <div className={style.search}>
@@ -37,18 +53,21 @@ const BoardList = () => {
         <button className={buttonStyle['default-button']}>글 작성</button>
       </Link>
 
-      {boardList.filter((value) => {
-        if (search === "") {
-          return value;
-        } else if (value.title.toLowerCase().includes(search.toLowerCase())) {
-          return value;
-        }
-      }).map((board, index) =>
+      {filteredList.map((board, index) =>
         <div key={index} className={style.wrap}>
+          <button className={style['delete-button']} onClick={onClickDelete(board.boardId)}>X</button>
+
           <div>
-            <Link to={`/board/list/` + board.boardId}>{board.title}</Link>
+            <div className={style.title}>
+              <Link to={`/board/list/` + board.boardId}>{board.title}</Link>
+            </div>
+            <div className={style.content}>{board.content}</div>
           </div>
-          <div>{board.content}</div>
+
+          <div className={style.info}>
+            <div>작성자: {board.memberId}</div>
+            <div>작성일: {board.createTimeStr}</div>
+          </div>
         </div>
       )}
     </div>
@@ -57,3 +76,5 @@ const BoardList = () => {
 }
 
 export default BoardList;
+
+

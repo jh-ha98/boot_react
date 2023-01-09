@@ -72,7 +72,7 @@ const BoardDetail = () => {
       <section>
         <div>
           {boardDetailView?.comments?.map((comment, index) =>
-            <div key={index}>
+            <div className={style.box} key={index}>
               {comment.loginId}
               <br />
               {comment.comment}

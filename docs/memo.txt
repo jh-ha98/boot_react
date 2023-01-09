@@ -39,3 +39,11 @@
 
 
 Optional: null이 올 수 있는 값을 감싸는 Wrapper 클래스, null대신 초기값 검사
+
+JPA 영속성 전이
+CascadeType.REMOVE : 부모 엔티티만 삭제하면 연관된 자식 엔티티도 삭제
+
+CascadeType종류
+-All:모두
+-REMOVE: 삭제
+-PERSIST: 영속
