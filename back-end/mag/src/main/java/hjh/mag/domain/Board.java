@@ -10,7 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -34,7 +33,6 @@ public class Board extends EntityBase {
   private String title;
 
   @Column(columnDefinition = "TEXT", nullable = false)
-  @Lob // 255개 이상의 문자저장
   private String content;
 
   @ManyToOne(fetch = FetchType.LAZY)

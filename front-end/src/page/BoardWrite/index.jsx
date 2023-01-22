@@ -39,9 +39,9 @@ const BoardWrite = () => {
   }
 
   return <>
-    <article>
+    <article className={style.article}>
       <header className={style.header}>
-        <h2>글쓰기</h2>
+        <h2 className={style["header-title"]}>글쓰기</h2>
         <button className={`${buttonStyle["default-button"]} ${style.button}`} onClick={onClicWrite}>등록</button>
       </header>
       <section>

@@ -154,4 +154,21 @@ public class MemberService {
 
     return new MessageBox(Valid.True, "로그인 성공", sessionMember);
   }
+
+  public void updateMember(Member member, HttpServletRequest request) throws Exception {
+    Member sessionMember = getSessionMember(request);
+    Long memberId = sessionMember.getId();
+
+    Member findMember = memberRepository.findById(memberId).get();
+    findMember.setEmail(member.getEmail());
+    findMember.setPassword(passwordEncoder.encode(member.getPassword()));
+
+    memberRepository.save(findMember);
+
+    // 원본 데이터 ->db
+    // 원본데이터 가져올때 식별자로 구분
+    // 로그인한 아이디 식별자 원본 데이터 조회
+
+  }
+
 }

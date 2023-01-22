@@ -28,24 +28,29 @@ const BoardList = () => {
     setSearch(event.target.value);
   }
 
-  const onClickDelete = (boardId) => () => {
-    axios.delete(`/api/board/delete/${boardId}`)
-      .then((res) => {
-        const newBoardList = [...boardList];
-        setBoardList(newBoardList.filter(boards => boards.boardId !== boardId));
-        alert(res.data.msg);
-      })
-      .catch((error) => {
-        console.log(error);
-        alert(error.response.data.msg);
-      });
+  const onClickDelete = (boardId) => (event) => {
+    event.preventDefault();
+    if (window.confirm('삭제하시겠습니까?')) {
+      axios.delete(`/api/board/delete/${boardId}`)
+        .then((res) => {
+          const newBoardList = [...boardList];
+          setBoardList(newBoardList.filter(boards => boards.boardId !== boardId));
+          alert(res.data.msg);
+        })
+        .catch((error) => {
+          console.log(error);
+          alert(error.response.data.msg);
+        })
+    } else {
+      return;
+    }
   };
 
   const filteredList = useMemo(() =>
     boardList.filter((board) => board.title.toLowerCase().includes(search.toLowerCase())), [boardList, search]);
 
   return (
-    <div>
+    <div className={style.wrap}>
       <div className={style.search}>
         <input className={style['search-input']} type="text" value={search} placeholder="검색" onChange={onChangeSearch} />
       </div>
@@ -54,7 +59,7 @@ const BoardList = () => {
       </Link>
 
       {filteredList.map((board, index) =>
-        <div key={index} className={style.wrap}>
+        <div key={index} className={style['box-wrap']}>
           <button className={style['delete-button']} onClick={onClickDelete(board.boardId)}>X</button>
 
           <div>
@@ -65,7 +70,7 @@ const BoardList = () => {
           </div>
 
           <div className={style.info}>
-            <div>작성자: {board.memberId}</div>
+            <div>작성자: {board.loginId}</div>
             <div>작성일: {board.createTimeStr}</div>
           </div>
         </div>

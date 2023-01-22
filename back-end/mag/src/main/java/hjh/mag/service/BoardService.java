@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import hjh.mag.domain.Board;
@@ -24,7 +25,8 @@ public class BoardService {
   private final MemberService memberService;
 
   public List<BoardInfo> getBoard() {
-    List<Board> boards = boardRepository.findAll();
+    //게시글이 최신순으로 정렬되도록 Sort추가
+    List<Board> boards = boardRepository.findAll(Sort.by(Sort.Direction.DESC, "createTime"));
     return BoardInfo.generate(boards, false);
   }
 

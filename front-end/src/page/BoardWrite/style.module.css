@@ -1,3 +1,9 @@
+.article {
+  width: 100%;
+  max-width: 80rem;
+  margin: auto;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -48,5 +54,9 @@
 .content[placeholder]:empty:before {
   display: block;
   content: attr(placeholder);
+  color: rgb(103, 64, 182);
+}
+
+.header-title {
   color: rgb(103, 64, 182);
 }

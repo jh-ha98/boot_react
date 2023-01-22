@@ -9,6 +9,10 @@
   flex-direction: column;
 }
 
+h2 {
+  font-size: 2rem;
+}
+
 #root input[type='button']:hover,
 #root button:hover {
   cursor: pointer;

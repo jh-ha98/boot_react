@@ -54,7 +54,6 @@ public class MemberController {
   public ResponseEntity<MessageBox> checkId(@RequestParam String loginId) throws Exception {
     MessageBox result = memberService.checkId(loginId);
     Valid valid = (Valid) result.getValid();
-
     if (valid == Valid.False)
       return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
 
@@ -66,7 +65,6 @@ public class MemberController {
   public ResponseEntity<MessageBox> memberInfo(HttpServletRequest request) throws Exception {
     MessageBox result = memberService.memberInfo(request);
     Valid valid = (Valid) result.getValid();
-
     if (valid == Valid.False)
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
 
@@ -78,10 +76,19 @@ public class MemberController {
   public ResponseEntity<MessageBox> signOut(HttpServletRequest request) throws Exception {
     MessageBox result = memberService.signOut(request);
     Valid valid = (Valid) result.getValid();
-
     if (valid == Valid.False)
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
 
     return ResponseEntity.status(HttpStatus.OK).body(result);
   }
+
+  // @PatchMapping("/mamber/update-info")
+  // public ResponseEntity<MessageBox> updateMember(@RequestBody Member member) throws Exception {
+  //   MessageBox result = memberService.updateInfo(loginId, member);
+  //   Valid valid = (Valid) result.getValid();
+  //   if (valid == Valid.False)
+  //   return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
+
+  // return ResponseEntity.status(HttpStatus.OK).body(result);
+  // }
 }

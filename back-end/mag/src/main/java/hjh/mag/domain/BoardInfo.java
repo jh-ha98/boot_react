@@ -16,7 +16,7 @@ public class BoardInfo {
   private Long boardId;
   private String title;
   private String content;
-  private String memberId;
+  private String loginId;
   private String email;
   private LocalDateTime createTime;
   private String createTimeStr;
@@ -30,7 +30,7 @@ public class BoardInfo {
     boardInfo.boardId = board.getId();
     boardInfo.title = board.getTitle();
     boardInfo.content = board.getContent();
-    boardInfo.memberId = board.getMember().getLoginId();
+    boardInfo.loginId = board.getMember().getLoginId();
     boardInfo.email = board.getMember().getEmail();
     boardInfo.setCreateTime(board.getCreateTime());
     if (fetchComments)

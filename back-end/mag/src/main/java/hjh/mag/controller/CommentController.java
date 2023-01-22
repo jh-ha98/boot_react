@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,6 +31,17 @@ public class CommentController {
   public ResponseEntity<MessageBox> commentSave(String comment, Long boardId, HttpServletRequest request)
       throws Exception {
     MessageBox result = commentService.commentSave(comment, boardId, request);
+    Valid valid = (Valid) result.getValid();
+    if (valid == Valid.False)
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
+
+    return ResponseEntity.status(HttpStatus.OK).body(result);
+  }
+
+  /* 댓글 삭제 */
+  @DeleteMapping("/comment/delete/{commentId}")
+  public ResponseEntity<MessageBox> commentDelete(@PathVariable("commentId") Long commentId, HttpServletRequest request) throws Exception {
+    MessageBox result = commentService.commentDelete(commentId, request);
     Valid valid = (Valid) result.getValid();
     if (valid == Valid.False)
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
