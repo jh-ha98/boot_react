@@ -43,11 +43,6 @@ h2 {
   margin: 1rem;
 }
 
-#root #side-bar {
-  background-color: rgb(177, 149, 233);
-  width: 15rem;
-}
-
 #root #sign-in-wrap {
   display: flex;
   flex-direction: column;

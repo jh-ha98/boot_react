@@ -5,10 +5,14 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import style from "./style.module.css";
 import buttonStyle from "../../style/buttons.module.css";
+import deleteImg from "../../resources/img/x.png";
+import updateImg from "../../resources/img/update.png";
 
 const BoardDetail = () => {
-  const [boardDetailView, setBoardDetailView] = useState({});
   const params = useParams();
+  const [boardDetailView, setBoardDetailView] = useState({});
+  const [textarea, setTextarea] = useState('');
+  const commentRef = useRef();
 
   useEffect(() => {
     const boardId = params.boardId;
@@ -22,8 +26,6 @@ const BoardDetail = () => {
         console.error(error);
       });
   }, []);
-
-  const commentRef = useRef();
 
   const onClickComment = useCallback(() => {
     const param = {
@@ -55,20 +57,75 @@ const BoardDetail = () => {
 
   const onClickDelete = (commentId) => (event) => {
     event.preventDefault();
-    if (window.confirm('삭제하시겠습니까?')) {
-      axios.delete(`/api/comment/delete/${commentId}`)
-        .then((res) => {
-          alert(res.data.msg);
-          const newBoardDetail = [{...boardDetailView}];
-          setBoardDetailView(newBoardDetail.filter(comments => comments.commentId !== commentId));
-        })
-        .catch((error) => {
-          console.log(error);
-          alert(error.response.data.msg);
-        })
-    } else {
-      return;
-    }
+
+    if (!confirm('삭제하시겠습니까?')) return;
+    axios.delete(`/api/comment/delete/${commentId}`)
+      .then((res) => {
+        console.log(res);
+        const newBoardDetail = {
+          ...boardDetailView,
+          comments: boardDetailView.comments.filter(comments => comments.commentId !== commentId)
+        };
+        setBoardDetailView(newBoardDetail);
+        alert(res.data.msg);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error.response.data.msg);
+      })
+  };
+
+  const onClickEdit = (commentId, commentText) => () => {
+    const newComments = boardDetailView.comments.map(comment => {
+      const editable = comment.commentId === commentId ? true : false;
+      return { ...comment, editable };
+    });
+
+    const newBoardDetailView = {
+      ...boardDetailView,
+      comments: newComments
+    };
+
+    setBoardDetailView(newBoardDetailView);
+    setTextarea(commentText);
+  };
+
+  const onClickUpdateBack2 = (comment) => () => {
+    comment.editable = false;
+    const newBoardDetailView = { ...boardDetailView };
+    setBoardDetailView(newBoardDetailView);
+  };
+
+  const onClickUpdate = (commentId) => (event) => {
+    event.preventDefault();
+    
+    console.log(commentRef.current.value)
+    const commentParam = { comment: textarea };
+
+    if (!confirm('수정하시겠습니까?')) return;
+    axios.put(`/api/comment/update/${commentId}`, commentParam)
+      .then((res) => {
+        const newComments = boardDetailView.comments.map(comment => {
+          const editable = comment.commentId === commentId ? true : false;
+          return { ...comment, editable };
+        });
+
+        const newBoardDetailView = {
+          ...boardDetailView,
+          comments: newComments
+        };
+
+        setBoardDetailView(newBoardDetailView);
+        alert(res.data.msg);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error.response.data.msg);
+      });
+  }
+
+  const onChangeTextarea = (event) => {
+    setTextarea(event.target.value);
   };
 
   const makeCommentBox = useCallback((comment, index) => {
@@ -79,24 +136,54 @@ const BoardDetail = () => {
         <div className={style['comment-wrap']} key={index}>
           <div className={style['comment-left-box']}>
             <div>{comment.loginId}</div>
-            <pre style={{ overflowWrap: 'break-word' }}>{comment.comment}</pre>
+            {comment.editable
+              ? (<textarea className={style['text-comment']} defaultValue={textarea} onChange={onChangeTextarea} />)
+              : (<pre className={style['text-comment']}>{comment.comment}</pre>)
+            }
+            <div className={style.createTimeStr}>{comment.createTimeStr}</div>
           </div>
-          <button className={style['delete-button']} onClick={onClickDelete(comment.commentId)}>X</button>
+
+          {comment.editable
+            ? (<>
+              <img src={deleteImg} className={style['delete-button']} onClick={onClickDelete(comment.commentId)} />
+              <button onClick={onClickUpdateBack2(comment)} className={style['update-button']}>취소</button>
+              <button className={style['update-button']} onClick={onClickUpdate(comment.commentId)}>확인</button>
+            </>)
+            : (<>
+              <img src={deleteImg} className={style['delete-button']} onClick={onClickDelete(comment.commentId)} />
+              <img src={updateImg} onClick={onClickEdit(comment.commentId, comment.comment)} className={style['delete-button']} />
+            </>)
+          }
+
         </div>
       );
     else
       result = (
         <div className={style['comment-right-wrap']} key={index}>
-          <button className={style['delete-button']} onClick={onClickDelete(comment.commentId)}>X</button>
+          {comment.editable
+            ? (<>
+              <img src={deleteImg} className={style['delete-button']} onClick={onClickDelete(comment.commentId)} />
+              <button onClick={onClickUpdateBack2(comment)} className={style['update-button']}>취소</button>
+              <button className={style['update-button']} onClick={onClickUpdate(comment.commentId)}>확인</button>
+            </>)
+            : (<>
+              <img src={deleteImg} className={style['delete-button']} onClick={onClickDelete(comment.commentId)} />
+              <img src={updateImg} onClick={onClickEdit(comment.commentId, comment.comment)} className={style['delete-button']} />
+            </>)
+          }
           <div className={style['comment-right-box']}>
             <div style={{ textAlign: "end" }}>{comment.loginId}</div>
-            <pre style={{ overflowWrap: 'break-word' }}>{comment.comment}</pre>
+            {comment.editable
+              ? (<textarea className={style['text-comment']} defaultValue={textarea} onChange={onChangeTextarea} />)
+              : (<pre className={style['text-comment']}>{comment.comment}</pre>)
+            }
+            <div className={style.createTimeStr}>{comment.createTimeStr}</div>
           </div>
         </div>
       );
 
     return result;
-  }, [boardDetailView]);
+  }, [boardDetailView, textarea]);
 
   return (
     <div className={style.wrap}>
@@ -122,6 +209,8 @@ const BoardDetail = () => {
       </div>
 
       <section>
+        <hr className={style.hr} />
+        <h3>댓글</h3>
         <div className={style['section-box']}>
           {boardDetailView?.comments?.map((comment, index) => makeCommentBox(comment, index))}
         </div>
@@ -130,10 +219,30 @@ const BoardDetail = () => {
           <textarea className={style.textarea} maxLength="100" ref={commentRef} placeholder='댓글을 입력하세요' />
         </div>
         <button onClick={onClickComment} className={buttonStyle['default-button']}>댓글달기</button>
-      </section >
-    </div >
+      </section>
+    </div>
   )
-
 };
 
 export default BoardDetail;
+
+// const onClickUpdateBack = () => {
+//   const originComments = boardDetailView.comments;
+//   const newComments = [];
+//   for (let i = 0; i < originComments.length; i++) {
+//     const originComment = originComments[i];
+//     const newComment = {
+//       ...originComment,
+//       editable: false
+//     };
+
+//     newComments.push(newComment);
+//   }
+
+//   const newBoardDetailView = {
+//     ...boardDetailView,
+//     comments: newComments
+//   };
+
+//   setBoardDetailView(newBoardDetailView);
+// };

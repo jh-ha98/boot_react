@@ -63,12 +63,37 @@ public class CommentService {
       Comment findComment = commentRepository.findById(commentId).orElseThrow();
 
       if (!sessionMember.getLoginId().equals(findComment.getMember().getLoginId()))
-        return new MessageBox(Valid.False, "해당 댓글을 삭제 할 수 없습니다.");
+        return new MessageBox(Valid.False, "본인이 작성한 댓글만 삭제 할 수 있습니다.");
 
       commentRepository.deleteById(commentId);
       return new MessageBox(Valid.True, "댓글이 삭제 되었습니다.");
     } catch (Exception e) {
       log.error("boardDelete error:", e);
+
+      return new MessageBox(Valid.False, "알수없는 에러.");
+    }
+  }
+
+  public MessageBox commentUpdate(Long commentId, String comment, HttpServletRequest request) throws Exception {
+    Member sessionMember = memberService.getSessionMember(request);
+
+    if (sessionMember == null)
+      return new MessageBox(Valid.False, "댓글은 인증된 사용자만 수정할 수 있습니다.");
+
+    try {
+      Comment findComment = commentRepository.findById(commentId).orElseThrow();
+
+      if (!sessionMember.getLoginId().equals(findComment.getMember().getLoginId()))
+        return new MessageBox(Valid.False, "본인이 작성한 댓글만 수정 할 수 있습니다.");
+
+      findComment.setComment(comment);
+
+      Comment savedComment = commentRepository.save(findComment);
+      CommentInfo commentInfo = CommentInfo.generate(savedComment);
+      return new MessageBox(Valid.True, "댓글이 수정 되었습니다.", commentInfo);
+
+    } catch (Exception e) {
+      log.error("boardDUpdate error:", e);
 
       return new MessageBox(Valid.False, "알수없는 에러.");
     }

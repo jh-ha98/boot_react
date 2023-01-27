@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { Link } from 'react-router-dom';
 import buttonStyle from "../../style/buttons.module.css";
+import deleteImg from "../../resources/img/x.png";
 import style from "./style.module.css";
 
 const BoardList = () => {
@@ -30,7 +31,7 @@ const BoardList = () => {
 
   const onClickDelete = (boardId) => (event) => {
     event.preventDefault();
-    if (window.confirm('삭제하시겠습니까?')) {
+    if (confirm('삭제하시겠습니까?')) {
       axios.delete(`/api/board/delete/${boardId}`)
         .then((res) => {
           const newBoardList = [...boardList];
@@ -60,7 +61,7 @@ const BoardList = () => {
 
       {filteredList.map((board, index) =>
         <div key={index} className={style['box-wrap']}>
-          <button className={style['delete-button']} onClick={onClickDelete(board.boardId)}>X</button>
+          <img src={deleteImg} className={style['delete-button']} onClick={onClickDelete(board.boardId)} />
 
           <div>
             <div className={style.title}>

@@ -48,10 +48,9 @@ const Home = () => {
         </div>
       </header>
       <section className={style.wrap}>
-        <nav id='side-bar'>
-          <li>
-            <Link to='/board/list'>게시판 리스트</Link>
-          </li>
+        <nav className={style['side-bar']}>
+          <Link to='/' className={style['side-link']}>홈</Link>
+          <Link to='/board/list' className={style['side-link']}>게시판 리스트</Link>
         </nav>
         <section className={style['inner-wrap']}>
           <Outlet />

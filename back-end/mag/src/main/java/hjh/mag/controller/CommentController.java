@@ -7,9 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import hjh.mag.domain.CommentUpdateForm;
 import hjh.mag.domain.MessageBox;
 import hjh.mag.domain.Valid;
 import hjh.mag.service.CommentService;
@@ -27,7 +30,8 @@ public class CommentController {
 
   /* 댓글 작성 */
   @PostMapping("/comment/write")
-  /** 어노테이션 없이 String 등의 Request와 관련 없는 타입의 파라미터가 선언되었을 경우는 @RequestParam(required=false, value={변수명})와 같음 */
+  // 어노테이션 없이 String 등의 Request와 관련 없는 타입의 파라미터가 선언되었을 경우는 @RequestParam(required=false, value={변수명})와 같음
+  // 주의점: url파라미터로 넘길때만 사용, post와 put에서는 사용하지 말자!!
   public ResponseEntity<MessageBox> commentSave(String comment, Long boardId, HttpServletRequest request)
       throws Exception {
     MessageBox result = commentService.commentSave(comment, boardId, request);
@@ -40,11 +44,24 @@ public class CommentController {
 
   /* 댓글 삭제 */
   @DeleteMapping("/comment/delete/{commentId}")
-  public ResponseEntity<MessageBox> commentDelete(@PathVariable("commentId") Long commentId, HttpServletRequest request) throws Exception {
+  public ResponseEntity<MessageBox> commentDelete(@PathVariable("commentId") Long commentId, HttpServletRequest request)
+      throws Exception {
     MessageBox result = commentService.commentDelete(commentId, request);
     Valid valid = (Valid) result.getValid();
     if (valid == Valid.False)
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
+
+    return ResponseEntity.status(HttpStatus.OK).body(result);
+  }
+
+  /* 댓글 수정 */
+  @PutMapping("/comment/update/{commentId}")
+  public ResponseEntity<MessageBox> commentUpdate(@PathVariable("commentId") Long commentId,
+      @RequestBody CommentUpdateForm form, HttpServletRequest request) throws Exception {
+    MessageBox result = commentService.commentUpdate(commentId, form.getComment(), request);
+    Valid valid = (Valid) result.getValid();
+    if (valid == Valid.False)
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
 
     return ResponseEntity.status(HttpStatus.OK).body(result);
   }

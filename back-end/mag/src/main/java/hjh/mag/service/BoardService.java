@@ -25,7 +25,7 @@ public class BoardService {
   private final MemberService memberService;
 
   public List<BoardInfo> getBoard() {
-    //게시글이 최신순으로 정렬되도록 Sort추가
+    // 게시글이 최신순으로 정렬되도록 Sort추가
     List<Board> boards = boardRepository.findAll(Sort.by(Sort.Direction.DESC, "createTime"));
     return BoardInfo.generate(boards, false);
   }
@@ -71,8 +71,8 @@ public class BoardService {
     try {
       Board findBoard = boardRepository.findById(boardId).orElseThrow();
 
-      if (!sessionMember.getLoginId().equals(findBoard.getMember().getLoginId()))
-        return new MessageBox(Valid.False, "해당 게시글을 삭제 할 수 없습니다.");
+      // if (!sessionMember.getLoginId().equals(findBoard.getMember().getLoginId()))
+      // return new MessageBox(Valid.False, "해당 게시글을 삭제 할 수 없습니다.");
 
       boardRepository.deleteById(boardId);
       return new MessageBox(Valid.True, "게시글이 삭제 되었습니다.");

@@ -62,7 +62,7 @@ public class BoardInfo {
     if (createTime == null)
       return;
 
-    createTimeStr = createTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    createTimeStr = createTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
   }
 
   /** Comment(댓글) 를 CommentInfo로 변환하여 값을 등록합니다 */

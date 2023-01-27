@@ -37,7 +37,7 @@ public class CommentInfo {
     if (createTime == null)
       return;
     
-    createTimeStr = createTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    createTimeStr = createTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
   }
 
 }

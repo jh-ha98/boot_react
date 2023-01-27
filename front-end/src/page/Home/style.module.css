@@ -9,3 +9,19 @@
   overflow: auto;
   padding: 1rem;
 }
+
+.side-bar {
+  background-color: rgb(177, 149, 233);
+  width: 15rem;
+}
+
+.side-link{
+  padding: 1rem;
+  font-weight: bolder;
+  text-decoration-line: none;
+  display: block;
+}
+
+.side-link:hover{
+  background-color: white;
+}

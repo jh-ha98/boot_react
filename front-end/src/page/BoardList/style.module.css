@@ -44,6 +44,9 @@
 
 .title {
   margin: .5rem 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .title a {
@@ -64,6 +67,9 @@
   position: absolute;
   top: .5rem;
   right: .5rem;
+  width: 1.5rem;
+  cursor: pointer;
+
 }
 
 .info {
