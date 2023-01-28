@@ -47,3 +47,10 @@ CascadeType종류
 -All:모두
 -REMOVE: 삭제
 -PERSIST: 영속
+
+JPA Auditing
+AuditingListener를 제공해 특정한 이벤트에 대해 자동으로 반응하여 등록일, 수정일, 등록자, 수정자와 같은 데이터를 입력
+- @CreatedDate : 생성 시간
+- @CreatedBy : 생성자
+- @LastModifiedDate : 수정 시간
+- @LastModifiedBy : 수정자

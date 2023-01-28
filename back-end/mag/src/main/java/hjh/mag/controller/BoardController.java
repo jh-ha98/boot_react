@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import hjh.mag.domain.Board;
-import hjh.mag.domain.BoardInfo;
-import hjh.mag.domain.MessageBox;
-import hjh.mag.domain.Valid;
+import hjh.mag.domain.dto.board.BoardInfo;
+import hjh.mag.domain.dto.board.BoardWriteForm;
+import hjh.mag.domain.dto.common.MessageBox;
+import hjh.mag.domain.type.MessageBoxValid;
 import hjh.mag.service.BoardService;
 import lombok.RequiredArgsConstructor;
 
@@ -44,10 +44,10 @@ public class BoardController {
 
   /** 게시글 작성 */
   @PostMapping("/board/write")
-  public ResponseEntity<MessageBox> boardWrite(@RequestBody Board board, HttpServletRequest request) throws Exception {
-    MessageBox result = boardService.write(board, request);
-    Valid valid = (Valid) result.getValid();
-    if (valid == Valid.False)
+  public ResponseEntity<MessageBox> boardWrite(@RequestBody BoardWriteForm form, HttpServletRequest request) throws Exception {
+    MessageBox result = boardService.write(form, request);
+    MessageBoxValid valid = (MessageBoxValid) result.getValid();
+    if (valid == MessageBoxValid.FALSE)
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
 
     return ResponseEntity.status(HttpStatus.OK).body(result);
@@ -59,8 +59,8 @@ public class BoardController {
   public ResponseEntity<MessageBox> boardDelete(@PathVariable("boardId") Long boardId, HttpServletRequest request)
       throws Exception {
     MessageBox result = boardService.delete(boardId, request);
-    Valid valid = (Valid) result.getValid();
-    if (valid == Valid.False)
+    MessageBoxValid valid = (MessageBoxValid) result.getValid();
+    if (valid == MessageBoxValid.FALSE)
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
 
     return ResponseEntity.status(HttpStatus.OK).body(result);

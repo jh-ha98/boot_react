@@ -1,10 +1,13 @@
-package hjh.mag.domain;
+package hjh.mag.domain.dto.board;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import hjh.mag.domain.dto.comment.CommentInfo;
+import hjh.mag.domain.entity.Board;
+import hjh.mag.domain.entity.Comment;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,8 +21,8 @@ public class BoardInfo {
   private String content;
   private String loginId;
   private String email;
-  private LocalDateTime createTime;
   private String createTimeStr;
+  private LocalDateTime createTime;
   private List<CommentInfo> comments = new ArrayList<>();
 
   /** BoardInfo를 생성합니다 */

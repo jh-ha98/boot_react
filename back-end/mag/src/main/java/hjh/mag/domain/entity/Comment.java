@@ -1,4 +1,4 @@
-package hjh.mag.domain;
+package hjh.mag.domain.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +16,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-public class Comment extends EntityBase {
+public class Comment extends BaseEntity {
   @Id
   @GeneratedValue
   @Column

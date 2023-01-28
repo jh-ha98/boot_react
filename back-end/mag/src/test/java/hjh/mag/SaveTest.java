@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import hjh.mag.domain.Board;
+import hjh.mag.domain.entity.Board;
 import hjh.mag.repository.BoardRepository;
 
 @SpringBootTest

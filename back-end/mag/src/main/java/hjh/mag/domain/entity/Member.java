@@ -1,4 +1,4 @@
-package hjh.mag.domain;
+package hjh.mag.domain.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 
+import hjh.mag.domain.type.MemberRoll;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -19,7 +20,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-public class Member extends EntityBase {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -41,7 +42,7 @@ public class Member extends EntityBase {
 
     @PrePersist
     private void prePersist() {
-        this.roll = this.roll == null ? MemberRoll.User : this.roll;
+        this.roll = this.roll == null ? MemberRoll.USER : this.roll;
     }
 
 }

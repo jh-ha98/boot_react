@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import hjh.mag.domain.Member;
-import hjh.mag.domain.MemberRoll;
+import hjh.mag.domain.entity.Member;
+import hjh.mag.domain.type.MemberRoll;
 import hjh.mag.repository.MemberRepository;
 
 @Transactional
@@ -28,11 +28,11 @@ public class RollTest {
     member.setLoginId("1234");
     member.setPassword("1234");
     member.setEmail("1234");
-    member.setRoll(MemberRoll.User);
+    member.setRoll(MemberRoll.USER);
 
     Member savedMember = memberRepository.save(member);
 
-    assertEquals(MemberRoll.User, savedMember.getRoll());
+    assertEquals(MemberRoll.USER, savedMember.getRoll());
   }
 
   @DisplayName("enum roll type 데이터 적용 확인: Admin")
@@ -42,11 +42,11 @@ public class RollTest {
     member.setLoginId("1234");
     member.setPassword("1234");
     member.setEmail("1234");
-    member.setRoll(MemberRoll.Admin);
+    member.setRoll(MemberRoll.ADMIN);
 
     Member savedMember = memberRepository.save(member);
 
-    assertEquals(MemberRoll.Admin, savedMember.getRoll());
+    assertEquals(MemberRoll.ADMIN, savedMember.getRoll());
   }
 
   @DisplayName("roll을 설정 안하면?")

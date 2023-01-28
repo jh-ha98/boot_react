@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-import hjh.mag.domain.Board;
-import hjh.mag.domain.Member;
-import hjh.mag.domain.MessageBox;
+import hjh.mag.domain.dto.common.MessageBox;
+import hjh.mag.domain.entity.Board;
+import hjh.mag.domain.entity.Member;
 import hjh.mag.repository.BoardRepository;
 import hjh.mag.service.BoardService;
 

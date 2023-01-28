@@ -1,8 +1,9 @@
-package hjh.mag.domain;
+package hjh.mag.domain.dto.comment;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import hjh.mag.domain.entity.Comment;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,9 +14,11 @@ public class CommentInfo {
 
   private Long commentId;
   private String comment;
-  private LocalDateTime createTime;
-  private String createTimeStr;
   private String loginId;
+  private String createTimeStr;
+  private String updateTimeStr;
+  private LocalDateTime createTime;
+  private LocalDateTime updateTime;
 
   public static CommentInfo generate(Comment comment) {
     CommentInfo commentInfo = new CommentInfo();
@@ -24,7 +27,8 @@ public class CommentInfo {
     commentInfo.comment = comment.getComment();
     commentInfo.loginId = comment.getMember().getLoginId();
     commentInfo.setCreateTime(comment.getCreateTime());
-    
+    commentInfo.setUpdateTime(comment.getUpdateTime());
+
     return commentInfo;
   }
 
@@ -33,11 +37,23 @@ public class CommentInfo {
     setCreateTimeStr();
   }
 
+  private void setUpdateTime(LocalDateTime updDateTime) {
+    this.updateTime = updDateTime;
+    setUpdateTimeStr();
+  }
+
   private void setCreateTimeStr() {
     if (createTime == null)
       return;
-    
+
     createTimeStr = createTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+  }
+
+  private void setUpdateTimeStr() {
+    if (updateTime == null)
+      return;
+
+    updateTimeStr = updateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
   }
 
 }

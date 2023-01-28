@@ -1,4 +1,4 @@
-package hjh.mag.domain;
+package hjh.mag.domain.dto.comment;
 
 import lombok.Getter;
 import lombok.ToString;

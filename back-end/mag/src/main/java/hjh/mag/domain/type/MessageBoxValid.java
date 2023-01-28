@@ -1,14 +1,14 @@
-package hjh.mag.domain;
+package hjh.mag.domain.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Valid {
+public enum MessageBoxValid {
 
-  True("TRUE"),
-  False("FALSE");
+  TRUE("TRUE"),
+  FALSE("FALSE");
 
   private String valid;
 

@@ -2,7 +2,7 @@ package hjh.mag.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import hjh.mag.domain.Board;
+import hjh.mag.domain.entity.Board;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 

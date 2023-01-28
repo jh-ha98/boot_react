@@ -1,4 +1,4 @@
-package hjh.mag.domain;
+package hjh.mag.domain.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +16,11 @@ import javax.persistence.OrderBy;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
-@Getter
 @Setter
-@ToString
+@Getter
 @Entity
-public class Board extends EntityBase {
+public class Board extends BaseEntity {
 
   @Id
   @GeneratedValue
@@ -43,5 +41,11 @@ public class Board extends EntityBase {
   @OrderBy("createTime asc") // 댓글 작성시 최근 순으로 볼 수 있도록 정렬
   @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
   private List<Comment> comments = new ArrayList<Comment>();
+
+  public Board(String title, String content, Member member) {
+    this.title = title;
+    this.content = content;
+    this.member = member;
+  }
 
 }

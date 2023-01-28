@@ -87,10 +87,15 @@
   margin: 1rem 0;
 }
 
-.delete-button {
+.img-button {
   align-self: flex-end;
   width: 1rem;
   cursor: pointer;
+}
+
+.update-button {
+  align-self: flex-end;
+  margin: 0 .2rem;
 }
 
 .createTimeStr {
@@ -102,11 +107,6 @@
   border: 0;
   border-top: 1px dashed #8c8c8c;
   border-bottom: 1px dashed #fff;
-}
-
-.update-button {
-  align-self: flex-end;
-  margin: 0 .2rem;
 }
 
 .text-comment {

@@ -106,7 +106,7 @@ const BoardDetail = () => {
     axios.put(`/api/comment/update/${commentId}`, commentParam)
       .then((res) => {
         const newComments = boardDetailView.comments.map(comment => {
-          const editable = comment.commentId === commentId ? true : false;
+          const editable = false;
           return { ...comment, editable };
         });
 
@@ -145,13 +145,13 @@ const BoardDetail = () => {
 
           {comment.editable
             ? (<>
-              <img src={deleteImg} className={style['delete-button']} onClick={onClickDelete(comment.commentId)} />
+              <img src={deleteImg} className={style['img-button']} onClick={onClickDelete(comment.commentId)} />
               <button onClick={onClickUpdateBack2(comment)} className={style['update-button']}>취소</button>
               <button className={style['update-button']} onClick={onClickUpdate(comment.commentId)}>확인</button>
             </>)
             : (<>
-              <img src={deleteImg} className={style['delete-button']} onClick={onClickDelete(comment.commentId)} />
-              <img src={updateImg} onClick={onClickEdit(comment.commentId, comment.comment)} className={style['delete-button']} />
+              <img src={deleteImg} className={style['img-button']} onClick={onClickDelete(comment.commentId)} />
+              <img src={updateImg} onClick={onClickEdit(comment.commentId, comment.comment)} className={style['img-button']} />
             </>)
           }
 
@@ -162,13 +162,13 @@ const BoardDetail = () => {
         <div className={style['comment-right-wrap']} key={index}>
           {comment.editable
             ? (<>
-              <img src={deleteImg} className={style['delete-button']} onClick={onClickDelete(comment.commentId)} />
+              <img src={deleteImg} className={style['img-button']} onClick={onClickDelete(comment.commentId)} />
               <button onClick={onClickUpdateBack2(comment)} className={style['update-button']}>취소</button>
               <button className={style['update-button']} onClick={onClickUpdate(comment.commentId)}>확인</button>
             </>)
             : (<>
-              <img src={deleteImg} className={style['delete-button']} onClick={onClickDelete(comment.commentId)} />
-              <img src={updateImg} onClick={onClickEdit(comment.commentId, comment.comment)} className={style['delete-button']} />
+              <img src={deleteImg} className={style['img-button']} onClick={onClickDelete(comment.commentId)} />
+              <img src={updateImg} onClick={onClickEdit(comment.commentId, comment.comment)} className={style['img-button']} />
             </>)
           }
           <div className={style['comment-right-box']}>
