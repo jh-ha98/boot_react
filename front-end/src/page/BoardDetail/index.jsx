@@ -105,13 +105,23 @@ const BoardDetail = () => {
     if (!confirm('수정하시겠습니까?')) return;
     axios.put(`/api/comment/update/${commentId}`, commentParam)
       .then((res) => {
+        // const findCommment = boardDetailView.comments.find(comment => comment.commentId === commentId ? true : false);
+        // findCommment.editable = false;
+        // findCommment.comment = textarea;
+
+        // const newBoardDetail = {
+        //   ...boardDetailView,
+        //   comments: [...comments]
+        // }
+
         const newBoardDetail = {
           ...boardDetailView,
-          comments: boardDetailView.comments.map(comment => {
-            const editable = comment.commentId === commentId ? true : false;
-            return { ...comment , editable};
-          })
-        }
+          comments: boardDetailView.comments.map(comment => ({
+            ...comment,
+            editable: false,
+            comment: textarea
+          }))
+        };
 
         setBoardDetailView(newBoardDetail);
         alert(res.data.msg);
