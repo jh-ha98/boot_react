@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import hjh.mag.domain.dto.common.MessageBox;
+import hjh.mag.domain.dto.member.MemberInfo;
 import hjh.mag.domain.entity.Board;
 import hjh.mag.domain.entity.Member;
 import hjh.mag.repository.BoardRepository;
@@ -44,24 +45,24 @@ public class DeleteTest {
   @DisplayName("boardService delete method test 허용되지 않은 사용자")
   public void differentMember() throws Exception {
 
-    Member fakeMember = new Member(); // 새로운 사용자를 만들고
-    fakeMember.setLoginId("loginId"); // 가짜 로그인 아이디 생성
+    // 새로운 사용자를 만들고
+    // 가짜 로그인 아이디 생성
+    Member fakeMember = new Member("loginId", null, null, null);
 
-    Board fakeBoard = new Board(); // 새로운 게시판을 만들고
-    fakeBoard.setTitle("타이틀"); // 가짜 게시판을 작성
-    fakeBoard.setContent("콘텐츠");
-    fakeBoard.setMember(fakeMember);
+    // 새로운 게시판을 만들고
+    // 가짜 게시판을 작성
+    Board fakeBoard = new Board("타이틀", "콘텐츠", fakeMember);
     boardRepository.save(fakeBoard); // 가짜로 작성한 게시글 저장
 
     Board findBoard = boardRepository.findById(fakeBoard.getId()).orElseThrow(); // 게시글을 작성한 아이디와 비교
 
     HttpServletRequest request = new MockHttpServletRequest();
-    Member sessionMember = new Member();
-    sessionMember.setLoginId("로그인아이디");
+    Member sessionMember = new Member("로그인아이디", null, null, null);
+    MemberInfo sessionMemberInfo = new MemberInfo(sessionMember);
 
-    request.getSession().setAttribute("member", sessionMember); // 세션에서 로그인한 멤버
+    request.getSession().setAttribute("member", sessionMemberInfo); // 세션에서 로그인한 멤버
 
-    MessageBox box = boardService.delete(findBoard.getId(), request); //boardId로 게시글 삭제
+    MessageBox box = boardService.delete(findBoard.getId(), request); // boardId로 게시글 삭제
 
     System.out.println(box.getMsg());
 
@@ -72,22 +73,20 @@ public class DeleteTest {
   @DisplayName("boardService delete method test 성공했을 때")
   public void sameMember() throws Exception {
 
-    Member fakeMember = new Member();
-    fakeMember.setLoginId("로그인아이디");
+    Member fakeMember = new Member("로그인아이디", null, null, null);
 
-    Board fakeBoard = new Board();
-    fakeBoard.setTitle("타이틀");
-    fakeBoard.setContent("콘텐츠");
-    fakeBoard.setMember(fakeMember);
+    // 새로운 게시판을 만들고
+    // 가짜 게시판을 작성
+    Board fakeBoard = new Board("타이틀", "콘텐츠", fakeMember);
     boardRepository.save(fakeBoard);
 
     Board findBoard = boardRepository.findById(fakeBoard.getId()).orElseThrow();
 
     HttpServletRequest request = new MockHttpServletRequest();
-    Member sessionMember = new Member();
-    sessionMember.setLoginId("로그인아이디");
+    Member sessionMember = new Member("로그인아이디", null, null, null);
+    MemberInfo sessionMemberInfo = new MemberInfo(sessionMember);
 
-    request.getSession().setAttribute("member", sessionMember);
+    request.getSession().setAttribute("member", sessionMemberInfo);
 
     MessageBox box = boardService.delete(findBoard.getId(), request);
 

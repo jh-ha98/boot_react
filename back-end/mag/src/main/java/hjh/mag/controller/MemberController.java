@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import hjh.mag.domain.dto.common.MessageBox;
-import hjh.mag.domain.entity.Member;
+import hjh.mag.domain.dto.member.MemberSignInForm;
+import hjh.mag.domain.dto.member.MemberSignUpForm;
 import hjh.mag.domain.type.MessageBoxValid;
 import hjh.mag.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +30,8 @@ public class MemberController {
 
   /** 회원 가입 */
   @PostMapping("/member/sign-up")
-  public ResponseEntity<MessageBox> signUp(@RequestBody Member member) throws Exception {
-    MessageBox result = memberService.signUp(member);
+  public ResponseEntity<MessageBox> signUp(@RequestBody MemberSignUpForm form) throws Exception {
+    MessageBox result = memberService.signUp(form);
     MessageBoxValid valid = (MessageBoxValid) result.getValid();
     if (valid == MessageBoxValid.FALSE)
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
@@ -40,8 +41,9 @@ public class MemberController {
 
   /** 회원 인증 */
   @PostMapping("/member/sign-in")
-  public ResponseEntity<MessageBox> signIn(@RequestBody Member member, HttpServletRequest request) throws Exception {
-    MessageBox result = memberService.signIn(member, request);
+  public ResponseEntity<MessageBox> signIn(@RequestBody MemberSignInForm form, HttpServletRequest request)
+      throws Exception {
+    MessageBox result = memberService.signIn(form, request);
     MessageBoxValid valid = (MessageBoxValid) result.getValid();
     if (valid == MessageBoxValid.FALSE)
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
@@ -84,10 +86,10 @@ public class MemberController {
 
   // @PatchMapping("/mamber/update-info")
   // public ResponseEntity<MessageBox> updateMember(@RequestBody Member member) throws Exception {
-  //   MessageBox result = memberService.updateInfo(loginId, member);
-  //   Valid valid = (Valid) result.getValid();
-  //   if (valid == Valid.False)
-  //   return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
+  // MessageBox result = memberService.updateInfo(loginId, member);
+  // Valid valid = (Valid) result.getValid();
+  // if (valid == Valid.False)
+  // return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
 
   // return ResponseEntity.status(HttpStatus.OK).body(result);
   // }

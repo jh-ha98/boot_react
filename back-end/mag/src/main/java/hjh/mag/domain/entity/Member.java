@@ -9,17 +9,18 @@ import javax.persistence.Id;
 import javax.persistence.PrePersist;
 
 import hjh.mag.domain.type.MemberRoll;
+import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 // @Data // @Getter, @Setter, @RequiredArgsConstructor, @ToString, @EqualsAndHashCode
 // 어노테이션을 한꺼번에 설정해주는 어노테이션
 // @EqualsAndHashCode(callSuper = true)
 @Getter
-@Setter
 @ToString
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseEntity {
 
     @Id
@@ -43,6 +44,13 @@ public class Member extends BaseEntity {
     @PrePersist
     private void prePersist() {
         this.roll = this.roll == null ? MemberRoll.USER : this.roll;
+    }
+
+    public Member(String loginId, String password, String email, MemberRoll roll) {
+        this.loginId = loginId;
+        this.password = password;
+        this.email = email;
+        this.roll = roll;
     }
 
 }

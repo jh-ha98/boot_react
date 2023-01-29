@@ -27,13 +27,13 @@ const BoardDetail = () => {
       });
   }, []);
 
-  const onClickComment = useCallback(() => {
+  const onClickCreateComment = useCallback(() => {
     const param = {
       boardId: params.boardId,
       comment: commentRef.current.value,
     };
 
-    axios.post('/api/comment/write', null, { params: param })
+    axios.post('/api/comment/write', param)
       .then((res) => {
         console.log(res);
         const comment = res.data.body;
@@ -98,31 +98,29 @@ const BoardDetail = () => {
 
   const onClickUpdate = (commentId) => (event) => {
     event.preventDefault();
-    
+
     console.log(commentRef.current.value)
     const commentParam = { comment: textarea };
 
     if (!confirm('수정하시겠습니까?')) return;
     axios.put(`/api/comment/update/${commentId}`, commentParam)
       .then((res) => {
-        const newComments = boardDetailView.comments.map(comment => {
-          const editable = false;
-          return { ...comment, editable };
-        });
-
-        const newBoardDetailView = {
+        const newBoardDetail = {
           ...boardDetailView,
-          comments: newComments
-        };
+          comments: boardDetailView.comments.map(comment => {
+            const editable = comment.commentId === commentId ? true : false;
+            return { ...comment , editable};
+          })
+        }
 
-        setBoardDetailView(newBoardDetailView);
+        setBoardDetailView(newBoardDetail);
         alert(res.data.msg);
       })
       .catch((error) => {
         console.log(error);
         alert(error.response.data.msg);
       });
-  }
+  };
 
   const onChangeTextarea = (event) => {
     setTextarea(event.target.value);
@@ -218,7 +216,7 @@ const BoardDetail = () => {
         <div>
           <textarea className={style.textarea} maxLength="100" ref={commentRef} placeholder='댓글을 입력하세요' />
         </div>
-        <button onClick={onClickComment} className={buttonStyle['default-button']}>댓글달기</button>
+        <button onClick={onClickCreateComment} className={buttonStyle['default-button']}>댓글달기</button>
       </section>
     </div>
   )

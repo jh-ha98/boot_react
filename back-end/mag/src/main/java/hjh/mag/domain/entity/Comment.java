@@ -8,14 +8,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@Setter
 @ToString
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment extends BaseEntity {
   @Id
   @GeneratedValue
@@ -32,4 +33,18 @@ public class Comment extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "member_id")
   private Member member;
+
+  public Comment(String comment, Board board, Member member) {
+    this.comment = comment;
+    this.board = board;
+    this.member = member;
+  }
+
+  /**
+   * 댓글의 값을 수정합니다
+   * @param comment 변경할 댓글
+   */
+  public void changeComment(String comment) {
+    this.comment = comment;
+  }
 }

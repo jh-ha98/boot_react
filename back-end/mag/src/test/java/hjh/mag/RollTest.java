@@ -24,11 +24,7 @@ public class RollTest {
   @DisplayName("enum roll type 데이터 적용 확인: User")
   @Test
   public void MemberRollUser() {
-    Member member = new Member();
-    member.setLoginId("1234");
-    member.setPassword("1234");
-    member.setEmail("1234");
-    member.setRoll(MemberRoll.USER);
+    Member member = new Member("1234", "1234", "1234", MemberRoll.USER);
 
     Member savedMember = memberRepository.save(member);
 
@@ -38,11 +34,7 @@ public class RollTest {
   @DisplayName("enum roll type 데이터 적용 확인: Admin")
   @Test
   public void MemberRollAdmin() {
-    Member member = new Member();
-    member.setLoginId("1234");
-    member.setPassword("1234");
-    member.setEmail("1234");
-    member.setRoll(MemberRoll.ADMIN);
+    Member member = new Member("1234", "1234", "1234", MemberRoll.ADMIN);
 
     Member savedMember = memberRepository.save(member);
 
@@ -52,10 +44,7 @@ public class RollTest {
   @DisplayName("roll을 설정 안하면?")
   @Test
   public void MemberNoRoll() {
-    Member member = new Member();
-    member.setLoginId("1234");
-    member.setPassword("1234");
-    member.setEmail("1234");
+    Member member = new Member("1234", "1234", "1234", null);
 
     assertDoesNotThrow(() -> memberRepository.save(member));
   }

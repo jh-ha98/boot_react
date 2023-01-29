@@ -22,12 +22,7 @@ public class SaveTest {
   @DisplayName("spring jpa insert 테스트")
   @Test
   public void insertBoard() {
-    Board board = new Board();
-    board.setTitle("1234");
-    board.setContent("1234");
-    board.setMember(null);
-    board.setId(null);
-
+    Board board = new Board("1234", "1234", null);
     Board savedBoard = boardRepository.save(board);
 
     // 클래스 동등 비교

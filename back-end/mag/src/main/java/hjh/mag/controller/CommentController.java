@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import hjh.mag.domain.dto.comment.CommentUpdateForm;
+import hjh.mag.domain.dto.comment.CommentWriteForm;
 import hjh.mag.domain.dto.common.MessageBox;
 import hjh.mag.domain.type.MessageBoxValid;
 import hjh.mag.service.CommentService;
@@ -32,9 +33,9 @@ public class CommentController {
   @PostMapping("/comment/write")
   // 어노테이션 없이 String 등의 Request와 관련 없는 타입의 파라미터가 선언되었을 경우는 @RequestParam(required=false, value={변수명})와 같음
   // 주의점: @RequestParam은 url파라미터로 넘길때만 사용, post와 put에서는 사용하지 말자!!
-  public ResponseEntity<MessageBox> commentWrite(String comment, Long boardId, HttpServletRequest request)
+  public ResponseEntity<MessageBox> commentWrite(@RequestBody CommentWriteForm form, HttpServletRequest request)
       throws Exception {
-    MessageBox result = commentService.commentWrite(comment, boardId, request);
+    MessageBox result = commentService.commentWrite(form, request);
     MessageBoxValid valid = (MessageBoxValid) result.getValid();
     if (valid == MessageBoxValid.FALSE)
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
