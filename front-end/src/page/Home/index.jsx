@@ -40,8 +40,14 @@ const Home = () => {
         <div id='top-bar-wrap'>
           <div>logo</div>
           <div>
-            {member === null ? <Link to='/user/sign-in'>로그인</Link> : ''}
-            {member === null ? <Link to='/user/sign-up'>회원가입</Link> : ''}
+            {member === null ?
+              <Link to='/user/sign-in'>
+                <button className={`${buttonStyle['default-button']} ${style.login}`}>로그인</button>
+              </Link> : ''}
+            {member === null ?
+              <Link to='/user/sign-up'>
+                <button className={buttonStyle['default-button']}>회원가입</button>
+              </Link> : ''}
             {!(member === null) ? member.loginId + '님 환영합니다' : ''}
             {!(member === null) ? <button className={buttonStyle['default-button']} onClick={onClickSignOut}>로그아웃</button> : ''}
           </div>

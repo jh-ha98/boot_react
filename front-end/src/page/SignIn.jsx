@@ -46,7 +46,7 @@ const SignIn = () => {
             <label>Password</label>
             <input type='password' ref={passwordRef} />
           </div>
-          <button type='buutton' onClick={onClickLogin}>로그인</button>
+          <button onClick={onClickLogin}>로그인</button>
         </form>
       </div>
     </section>

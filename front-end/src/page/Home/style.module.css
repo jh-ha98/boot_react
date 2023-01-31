@@ -25,3 +25,7 @@
 .side-link:hover{
   background-color: white;
 }
+
+.login{
+  margin: 0 0.3rem;
+}
