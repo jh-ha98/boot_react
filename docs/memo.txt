@@ -54,3 +54,8 @@ AuditingListener를 제공해 특정한 이벤트에 대해 자동으로 반응�
 - @CreatedBy : 생성자
 - @LastModifiedDate : 수정 시간
 - @LastModifiedBy : 수정자
+
+Spring Boot build
+C:\Users\JH\Desktop\workspace\Spring_Boot_React\back-end\mag> .\gradlew build
+jar 파일이 있는 곳에서 java -jar으로 실행할 떄: java -jar .\build\libs\mag-0.0.1-SNAPSHOT.jar
+jar 파일 위치: cd .\build\libs\

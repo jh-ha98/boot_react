@@ -7,6 +7,10 @@ import Home from './page/Home';
 import BoardWrite from './page/BoardWrite';
 import BoardList from './page/BoardList';
 import BoardDetail from './page/BoardDetail';
+import axios from 'axios';
+
+axios.defaults.baseURL = 'http://127.0.0.1:8080/';
+// axios.defaults.withCredentials = true;
 
 const App = () => {
   return (

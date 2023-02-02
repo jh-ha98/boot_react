@@ -7,12 +7,14 @@ import org.springframework.stereotype.Service;
 import hjh.mag.domain.dto.comment.CommentInfo;
 import hjh.mag.domain.dto.comment.CommentWriteForm;
 import hjh.mag.domain.dto.common.MessageBox;
+import hjh.mag.domain.dto.member.MemberInfo;
 import hjh.mag.domain.entity.Board;
 import hjh.mag.domain.entity.Comment;
 import hjh.mag.domain.entity.Member;
 import hjh.mag.domain.type.MessageBoxValid;
 import hjh.mag.repository.BoardRepository;
 import hjh.mag.repository.CommentRepository;
+import hjh.mag.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,11 +25,12 @@ public class CommentService {
 
   private final BoardRepository boardRepository;
   private final CommentRepository commentRepository;
+  private final MemberRepository memberRepository;
   private final MemberService memberService;
 
   /** 댓글 저장 */
   public MessageBox commentWrite(CommentWriteForm form, HttpServletRequest request) throws Exception {
-    Member sessionMember = memberService.getSessionMember(request);
+    MemberInfo sessionMember = memberService.getSessionMember(request);
 
     if (sessionMember == null)
       return new MessageBox(MessageBoxValid.FALSE, "댓글은 인증된 사용자만 작성할 수 있습니다.");
@@ -42,8 +45,8 @@ public class CommentService {
       if (board == null)
         return new MessageBox(MessageBoxValid.FALSE, "없는 게시글 입니다.");
 
-      Comment newComment = new Comment(form.getComment(), board, sessionMember);
-
+      Member member = memberRepository.findById(sessionMember.getMemberId()).get();
+      Comment newComment = new Comment(form.getComment(), board, member);
       Comment savedComment = commentRepository.save(newComment);
 
       return new MessageBox(MessageBoxValid.TRUE, "댓글이 작성 되었습니다.", CommentInfo.generate(savedComment));
@@ -57,7 +60,7 @@ public class CommentService {
 
   /** 댓글 삭제 */
   public MessageBox commentDelete(Long commentId, HttpServletRequest request) throws Exception {
-    Member sessionMember = memberService.getSessionMember(request);
+    MemberInfo sessionMember = memberService.getSessionMember(request);
 
     if (sessionMember == null)
       return new MessageBox(MessageBoxValid.FALSE, "댓글은 인증된 사용자만 삭제할 수 있습니다.");
@@ -79,7 +82,7 @@ public class CommentService {
 
   /** 댓글 수정 */
   public MessageBox commentUpdate(Long commentId, String comment, HttpServletRequest request) throws Exception {
-    Member sessionMember = memberService.getSessionMember(request);
+    MemberInfo sessionMember = memberService.getSessionMember(request);
 
     if (sessionMember == null)
       return new MessageBox(MessageBoxValid.FALSE, "댓글은 인증된 사용자만 수정할 수 있습니다.");

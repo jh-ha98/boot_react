@@ -142,17 +142,17 @@ public class MemberService {
 
   }
 
-  public Member getSessionMember(HttpServletRequest request) throws Exception {
+  public MemberInfo getSessionMember(HttpServletRequest request) throws Exception {
     HttpSession session = request.getSession(false);
     if (session == null)
       return null;
 
-    return (Member) session.getAttribute(SESSION_KEY);
+    return (MemberInfo) session.getAttribute(SESSION_KEY);
   }
 
   public MessageBox memberInfo(HttpServletRequest request) throws Exception {
 
-    Member sessionMember = getSessionMember(request);
+    MemberInfo sessionMember = getSessionMember(request);
     if (sessionMember == null) {
       return new MessageBox(MessageBoxValid.FALSE, "로그인 되어있지 않습니다.");
     }

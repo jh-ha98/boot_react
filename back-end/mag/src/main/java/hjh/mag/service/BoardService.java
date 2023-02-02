@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 import hjh.mag.domain.dto.board.BoardInfo;
 import hjh.mag.domain.dto.board.BoardWriteForm;
 import hjh.mag.domain.dto.common.MessageBox;
+import hjh.mag.domain.dto.member.MemberInfo;
 import hjh.mag.domain.entity.Board;
 import hjh.mag.domain.entity.Member;
 import hjh.mag.domain.type.MessageBoxValid;
 import hjh.mag.repository.BoardRepository;
+import hjh.mag.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 public class BoardService {
 
   private final BoardRepository boardRepository;
+  private final MemberRepository memberRepository;
   private final MemberService memberService;
 
   public List<BoardInfo> getBoard() {
@@ -37,7 +40,7 @@ public class BoardService {
   }
 
   public MessageBox write(BoardWriteForm form, HttpServletRequest request) throws Exception {
-    Member sessionMember = memberService.getSessionMember(request);
+    MemberInfo sessionMember = memberService.getSessionMember(request);
 
     if (sessionMember == null)
       return new MessageBox(MessageBoxValid.FALSE, "게시글은 인증된 사용자만 작성할 수 있습니다.");
@@ -50,7 +53,8 @@ public class BoardService {
         return new MessageBox(MessageBoxValid.FALSE, "내용을 입력해 주세요!");
       }
 
-      Board board = new Board(form.getTitle(), form.getContent(), sessionMember);
+      Member member = memberRepository.findById(sessionMember.getMemberId()).get();
+      Board board = new Board(form.getTitle(), form.getContent(), member);
       Board savedBoard = boardRepository.save(board);
 
       return new MessageBox(MessageBoxValid.TRUE, "게시글이 작성 되었습니다.", savedBoard);
@@ -64,7 +68,7 @@ public class BoardService {
   }
 
   public MessageBox delete(Long boardId, HttpServletRequest request) throws Exception {
-    Member sessionMember = memberService.getSessionMember(request);
+    MemberInfo sessionMember = memberService.getSessionMember(request);
 
     if (sessionMember == null)
       return new MessageBox(MessageBoxValid.FALSE, "게시글은 인증된 사용자만 삭제할 수 있습니다.");
