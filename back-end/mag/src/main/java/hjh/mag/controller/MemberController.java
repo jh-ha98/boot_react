@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import hjh.mag.domain.dto.common.MessageBox;
 import hjh.mag.domain.dto.member.MemberSignInForm;
@@ -22,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController // Controller+ResponseBody
-@SessionAttributes("member")
 @RequestMapping("/api")
 public class MemberController {
 
@@ -85,7 +83,8 @@ public class MemberController {
   }
 
   // @PatchMapping("/mamber/update-info")
-  // public ResponseEntity<MessageBox> updateMember(@RequestBody Member member) throws Exception {
+  // public ResponseEntity<MessageBox> updateMember(@RequestBody Member member)
+  // throws Exception {
   // MessageBox result = memberService.updateInfo(loginId, member);
   // Valid valid = (Valid) result.getValid();
   // if (valid == Valid.False)

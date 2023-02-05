@@ -81,7 +81,7 @@ public class MemberService {
 
       // 세션에 로그인정보(Member 객체) 등록
       HttpSession session = request.getSession();
-      session.setAttribute(SESSION_KEY, findMember);
+      session.setAttribute(SESSION_KEY, memberInfo);
       return new MessageBox(MessageBoxValid.TRUE, "로그인 성공!", memberInfo);
     } catch (Exception e) {
       log.error("signIn error:", e);
