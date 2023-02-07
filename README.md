@@ -60,6 +60,12 @@ front
 
 ## 배포
 ### 서버 구성도
+Nginx를 통해 Front-End 서버와 API 서버를 하나의 서버처럼 동작하도록 구성합니다.  
+SSL 설정을 하고 http 요청을 https 요청으로 리다이렉트 시킵니다.  
+<img src='./docs/server-structure.png'  width='30%' height='30%'>
+
 ### Nginx
-### SSL
+
 ### Proxy Server
+
+### SSL
