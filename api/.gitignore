@@ -1,5 +1,6 @@
 ### custom
 application-prod.properties
+logs
 
 HELP.md
 .gradle
