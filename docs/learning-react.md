@@ -1,5 +1,14 @@
 # Front-End 학습 정리
 React를 이용한 사용자 인테페이스를 만들면서 정리한 학습내용입니다.
+- [메인](../README.md)
+
+## 목차
+- [Javascript](#javascript)
+- [React](#react)
+    - [사용된 패키지](#사용된-패키지)
+    - [명령어](#명령어)
+    - [전개구문 사용하기](#전개구문-사용하기)
+    - [라우터 만들기](#라우터-만들기)
 
 ## Javascript
 JavaScript는 웹 페이지에서 복잡한 기능을 구현할 수 있도록 하는 스크립팅 언어 또는 프로그래밍 언어입니다.
@@ -97,7 +106,7 @@ const router = createBrowserRouter([
     },
 ]);
 
-const App=() =>{
+const App = () => {
     return(
         <RouterProvider router={router} />
     )

@@ -1,5 +1,14 @@
 # API Server 학습 정리
 스프링 프로젝트로 API 서버를 만들면서 정리한 학습내용입니다.
+- [메인](../README.md)
+
+## 목차
+- [Java](#java)
+- [사용된 패키지](#사용된-패키지)
+- [API 서버 계층구조](#api-서버-계층구조)
+- [REST API](#rest-api)
+- [Gradle](#gradle)
+- [JPA](#jpa)
 
 ## Java
 객체지향형 언어.
@@ -16,7 +25,7 @@
 java -jar [파일명].jar 
 # [파일명].jar 파일을 실행할때 application-prod.properties 파일을 우선적으로 읽어서 실행합니다.
 # '&' 키워드는 백그라운드로 명령어를 실행합니다.
-java -jar -Dspring.profile.active=prod [파일명].jar &
+java -jar -Dspring.profiles.active=prod [파일명].jar &
 ```
 
 ## 사용된 패키지
