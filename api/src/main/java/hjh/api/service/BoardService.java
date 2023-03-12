@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import hjh.api.domain.dto.board.BoardInfo;
+import hjh.api.domain.dto.board.BoardUpdateForm;
 import hjh.api.domain.dto.board.BoardWriteForm;
 import hjh.api.domain.dto.common.MessageBox;
 import hjh.api.domain.dto.member.MemberInfo;
@@ -39,6 +40,13 @@ public class BoardService {
     return BoardInfo.generate(findBoard, true);
   }
 
+  /** 게시글 조회 */
+  public BoardInfo select(Long boardId) {
+    Board findBoard = boardRepository.findById(boardId).orElseThrow();
+    return BoardInfo.generate(findBoard, false);
+  }
+
+  /** 게시글 작성 */
   public MessageBox write(BoardWriteForm form, HttpServletRequest request) throws Exception {
     MemberInfo sessionMember = memberService.getSessionMember(request);
 
@@ -64,9 +72,9 @@ public class BoardService {
 
       return new MessageBox(MessageBoxValid.FALSE, "알수없는 에러.");
     }
-
   }
 
+  /** 게시글 삭제 */
   public MessageBox delete(Long boardId, HttpServletRequest request) throws Exception {
     MemberInfo sessionMember = memberService.getSessionMember(request);
 
@@ -86,7 +94,32 @@ public class BoardService {
 
       return new MessageBox(MessageBoxValid.FALSE, "알수없는 에러.");
     }
+  }
 
+  /** 게시글 수정 */
+  public MessageBox update(BoardUpdateForm form, HttpServletRequest request) throws Exception {
+    MemberInfo sessionMember = memberService.getSessionMember(request);
+
+    if (sessionMember == null)
+      return new MessageBox(MessageBoxValid.FALSE, "게시글은 인증된 사용자만 수정할 수 있습니다.");
+
+    try {
+      Board findBoard = boardRepository.findById(form.getBoardId()).orElseThrow();
+
+      if (!sessionMember.getLoginId().equals(findBoard.getMember().getLoginId()))
+        return new MessageBox(MessageBoxValid.FALSE, "본인이 작성한 게시글만 수정 할 수 있습니다.");
+
+      findBoard.changeBoard(form.getTitle(), form.getContent());
+
+      Board savedBoard = boardRepository.save(findBoard);
+      BoardInfo boardInfo = BoardInfo.generate(savedBoard, false);
+
+      return new MessageBox(MessageBoxValid.TRUE, "게시글이 수정 되었습니다.", boardInfo);
+    } catch (Exception e) {
+      log.error("boardDelete error:", e);
+
+      return new MessageBox(MessageBoxValid.FALSE, "알수없는 에러.");
+    }
   }
 
 }

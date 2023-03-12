@@ -2,7 +2,7 @@
 import axios from "axios";
 import React, { useCallback, useEffect, useRef } from "react";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import style from "./style.module.css";
 import buttonStyle from "../../style/buttons.module.css";
 import deleteImg from "../../resources/img/x.png";
@@ -195,7 +195,15 @@ const BoardDetail = () => {
 
   return (
     <div className={style.wrap}>
-      <h2>{boardDetailView.title}</h2>
+      <div className={style.titleWrap}>
+        <h2>{boardDetailView.title}</h2>
+        <div className={style.buttonWrap}>
+          <Link to={`/board/update/${params.boardId}`}>
+            <button className={`${buttonStyle["default-button"]} ${style.button}`}>수정</button>
+          </Link>
+          <button className={`${buttonStyle["default-button"]} ${style.button}`}>삭제</button>
+        </div>
+      </div>
       <div className={style.innerWrap}>
         <div className={style.info}>
           <div className={style.infoId}>

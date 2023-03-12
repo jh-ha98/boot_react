@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import hjh.api.domain.dto.board.BoardInfo;
 import hjh.api.domain.dto.board.BoardWriteForm;
+import hjh.api.domain.dto.board.BoardUpdateForm;
 import hjh.api.domain.dto.common.MessageBox;
 import hjh.api.domain.type.MessageBoxValid;
 import hjh.api.service.BoardService;
@@ -40,6 +42,12 @@ public class BoardController {
     return boardService.getBoardDetail(boardId);
   }
 
+  /** 게시글 조회 */
+  @GetMapping("/board/select/{boardId}")
+  public BoardInfo boardSelect(@PathVariable("boardId") Long boardId) {
+    return boardService.select(boardId);
+  }
+
   /** 게시글 작성 */
   @PostMapping("/board/write")
   public ResponseEntity<MessageBox> boardWrite(@RequestBody BoardWriteForm form, HttpServletRequest request)
@@ -50,7 +58,6 @@ public class BoardController {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
 
     return ResponseEntity.status(HttpStatus.OK).body(result);
-
   }
 
   /** 게시글 삭제 */
@@ -58,6 +65,18 @@ public class BoardController {
   public ResponseEntity<MessageBox> boardDelete(@PathVariable("boardId") Long boardId, HttpServletRequest request)
       throws Exception {
     MessageBox result = boardService.delete(boardId, request);
+    MessageBoxValid valid = (MessageBoxValid) result.getValid();
+    if (valid == MessageBoxValid.FALSE)
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
+
+    return ResponseEntity.status(HttpStatus.OK).body(result);
+  }
+
+  /** 게시글 수정 */
+  @PutMapping("/board/update")
+  public ResponseEntity<MessageBox> boardUpdate(@RequestBody BoardUpdateForm form, HttpServletRequest request)
+      throws Exception {
+    MessageBox result = boardService.update(form, request);
     MessageBoxValid valid = (MessageBoxValid) result.getValid();
     if (valid == MessageBoxValid.FALSE)
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);

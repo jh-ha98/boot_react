@@ -7,6 +7,7 @@ import Home from './page/Home';
 import BoardWrite from './page/BoardWrite';
 import BoardList from './page/BoardList';
 import BoardDetail from './page/BoardDetail';
+import BoardUpdate from './page/BoardUpdate';
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Route path="/board/list" element={<BoardList />} />
         <Route path="/board/list/:boardId" element={<BoardDetail />} />
         <Route path="/board/write" element={<BoardWrite />} />
+        <Route path="/board/update/:boardId" element={<BoardUpdate />} />
       </Route>
       <Route path="/user/sign-in" element={<SignIn />} />
       <Route path="/user/sign-up" element={<SignUp />} />
