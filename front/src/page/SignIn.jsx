@@ -10,7 +10,6 @@ const SignIn = () => {
   const onClickLogin = (event) => {
     event.preventDefault();
 
-
     const param = {
       loginId: loginIdRef.current.value,
       password: passwordRef.current.value
@@ -27,7 +26,6 @@ const SignIn = () => {
         console.log(err);
         alert(err.response.data.msg);
       });
-
   };
 
   if (member) {

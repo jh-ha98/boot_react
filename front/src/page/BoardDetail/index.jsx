@@ -2,17 +2,18 @@
 import axios from "axios";
 import React, { useCallback, useEffect, useRef } from "react";
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import style from "./style.module.css";
 import buttonStyle from "../../style/buttons.module.css";
 import deleteImg from "../../resources/img/x.png";
-import updateImg from "../../resources/img/update.png";
+import updateImg from "../../resources/img/modify.png";
 
 const BoardDetail = () => {
   const params = useParams();
   const [boardDetailView, setBoardDetailView] = useState({});
   const [textarea, setTextarea] = useState('');
   const commentRef = useRef();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const boardId = params.boardId;
@@ -58,7 +59,7 @@ const BoardDetail = () => {
   const onClickDelete = (commentId) => (event) => {
     event.preventDefault();
 
-    if (!confirm('삭제하시겠습니까?')) return;
+    if (!confirm('댓글을 삭제하시겠습니까?')) return;
     axios.delete(`/api/comment/delete/${commentId}`)
       .then((res) => {
         console.log(res);
@@ -102,7 +103,7 @@ const BoardDetail = () => {
     console.log(commentRef.current.value)
     const commentParam = { comment: textarea };
 
-    if (!confirm('수정하시겠습니까?')) return;
+    if (!confirm('댓글을 수정하시겠습니까?')) return;
     axios.put(`/api/comment/update/${commentId}`, commentParam)
       .then((res) => {
         // const findCommment = boardDetailView.comments.find(comment => comment.commentId === commentId ? true : false);
@@ -114,16 +115,22 @@ const BoardDetail = () => {
         //   comments: [...comments]
         // }
 
-        const newBoardDetail = {
-          ...boardDetailView,
-          comments: boardDetailView.comments.map(comment => ({
-            ...comment,
-            editable: false,
-            comment: textarea
-          }))
-        };
+        const updateCommentDetail = { ...boardDetailView };
 
-        setBoardDetailView(newBoardDetail);
+        const newComments = updateCommentDetail.comments.map((comment) => {
+          if (comment.commentId === commentId) {
+            const copyComment = { ...comment };
+            copyComment.editable = false;
+            copyComment.comment = textarea;
+            return copyComment;
+          } else {
+            return comment;
+          }
+        });
+
+        updateCommentDetail.comments = newComments;
+
+        setBoardDetailView(updateCommentDetail);
         alert(res.data.msg);
       })
       .catch((error) => {
@@ -136,6 +143,26 @@ const BoardDetail = () => {
     setTextarea(event.target.value);
   };
 
+  const onClickDeleteBoard = (boardId) => (event) => {
+    event.preventDefault();
+
+    if (confirm('게시글을 삭제하시겠습니까?')) {
+      axios.delete(`/api/board/delete/${boardId}`)
+        .then((res) => {
+          const deleteBoard = { ...boardDetailView };
+          alert(res.data.msg);
+          setBoardDetailView(deleteBoard);
+          navigate('/board/list');
+        })
+        .catch((error) => {
+          console.log(error);
+          alert(error.response.data.msg);
+        })
+    } else {
+      return;
+    }
+  };
+
   const makeCommentBox = useCallback((comment, index) => {
     let result;
 
@@ -145,7 +172,7 @@ const BoardDetail = () => {
           <div className={style['comment-left-box']}>
             <div>{comment.loginId}</div>
             {comment.editable
-              ? (<textarea className={style['text-comment']} defaultValue={textarea} onChange={onChangeTextarea} />)
+              ? <span className={style['text-comment-content']} onChange={onChangeTextarea} contentEditable suppressContentEditableWarning>{textarea}</span>
               : (<pre className={style['text-comment']}>{comment.comment}</pre>)
             }
             <div className={style.createTimeStr}>{comment.createTimeStr}</div>
@@ -182,7 +209,7 @@ const BoardDetail = () => {
           <div className={style['comment-right-box']}>
             <div style={{ textAlign: "end" }}>{comment.loginId}</div>
             {comment.editable
-              ? (<textarea className={style['text-comment']} defaultValue={textarea} onChange={onChangeTextarea} />)
+              ? <span className={style['text-comment-content']} onChange={onChangeTextarea} contentEditable suppressContentEditableWarning>{textarea}</span>
               : (<pre className={style['text-comment']}>{comment.comment}</pre>)
             }
             <div className={style.createTimeStr}>{comment.createTimeStr}</div>
@@ -201,7 +228,7 @@ const BoardDetail = () => {
           <Link to={`/board/update/${params.boardId}`}>
             <button className={`${buttonStyle["default-button"]} ${style.button}`}>수정</button>
           </Link>
-          <button className={`${buttonStyle["default-button"]} ${style.button}`}>삭제</button>
+          <button className={`${buttonStyle["default-button"]} ${style.button}`} onClick={onClickDeleteBoard(params.boardId)}>삭제</button>
         </div>
       </div>
       <div className={style.innerWrap}>
@@ -232,7 +259,7 @@ const BoardDetail = () => {
         </div>
 
         <div>
-          <textarea className={style.textarea} maxLength="100" ref={commentRef} placeholder='댓글을 입력하세요' />
+          <textarea className={style.textarea} maxLength="100" ref={commentRef} placeholder='댓글을 입력하세요' contentEditable suppressContentEditableWarning/>
         </div>
         <button onClick={onClickCreateComment} className={buttonStyle['default-button']}>댓글달기</button>
       </section>

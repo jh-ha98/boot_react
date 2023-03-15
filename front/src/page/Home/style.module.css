@@ -15,17 +15,54 @@
   width: 15rem;
 }
 
-.side-link{
+.hide {
+  background-color: rgb(177, 149, 233);
+  width: 3rem;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+.side-link {
   padding: 1rem;
   font-weight: bolder;
   text-decoration-line: none;
   display: block;
 }
 
-.side-link:hover{
+.side-link:hover {
   background-color: white;
 }
 
-.login{
+.login {
   margin: 0 0.3rem;
+}
+
+.logout {
+  margin-left: .3rem;
+}
+
+.menuWrap {
+  display: flex;
+  align-items: center;
+}
+
+.home {
+  width: 1.4rem;
+  height: 1.4rem;
+  vertical-align: text-bottom;
+  margin-right: .5rem;
+}
+
+.board {
+  width: 1.4rem;
+  height: 1.4rem;
+  vertical-align: text-bottom;
+  margin-right: .5rem;
+}
+
+.menu {
+  width: 1.4rem;
+  height: 1.4rem;
+  margin-right: .8rem;
+  cursor: pointer;
 }

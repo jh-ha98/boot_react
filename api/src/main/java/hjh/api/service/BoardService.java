@@ -104,7 +104,7 @@ public class BoardService {
       return new MessageBox(MessageBoxValid.FALSE, "게시글은 인증된 사용자만 수정할 수 있습니다.");
 
     try {
-      Board findBoard = boardRepository.findById(form.getBoardId()).orElseThrow();
+      Board findBoard = boardRepository.findById(form.getId()).orElseThrow();
 
       if (!sessionMember.getLoginId().equals(findBoard.getMember().getLoginId()))
         return new MessageBox(MessageBoxValid.FALSE, "본인이 작성한 게시글만 수정 할 수 있습니다.");
@@ -116,7 +116,7 @@ public class BoardService {
 
       return new MessageBox(MessageBoxValid.TRUE, "게시글이 수정 되었습니다.", boardInfo);
     } catch (Exception e) {
-      log.error("boardDelete error:", e);
+      log.error("boardUpdate error:", e);
 
       return new MessageBox(MessageBoxValid.FALSE, "알수없는 에러.");
     }

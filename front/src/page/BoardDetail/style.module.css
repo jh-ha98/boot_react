@@ -9,17 +9,16 @@
   margin-top: 1rem;
   min-height: 10rem;
 }
-.titleWrap{
+
+.titleWrap {
   display: flex;
   justify-content: space-between;
 }
+
 .buttonWrap {
   display: flex;
   justify-content: end;
   align-items: center;
-  position: sticky;
-  top: -1rem;
-  background-color: white;
   padding: 0 1rem;
   width: 100%;
   margin-top: 0;
@@ -35,12 +34,21 @@
 
 .textarea {
   width: 100%;
-  height: 7rem;
+  height: auto;
+  min-height: 7rem;
   line-height: 1.75rem;
   resize: none;
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 1rem;
   box-sizing: border-box;
+  white-space: pre-wrap;
+}
+
+.textarea[placeholder]:empty:before {
+  display: block;
+  content: attr(placeholder);
+  color: #000;
+  overflow: hidden;
 }
 
 .section-box {
@@ -125,6 +133,7 @@
 .createTimeStr {
   font-size: small;
   opacity: 0.5;
+  position: relative;
 }
 
 .hr {
@@ -135,4 +144,24 @@
 
 .text-comment {
   overflow-wrap: break-word;
+  width: 100%;
+  line-height: 1.5rem;
+  height: auto;
+  min-height: 5rem;
+  resize: none;
+  white-space: pre-wrap;
+}
+
+.text-comment-content {
+  overflow-wrap: break-word;
+  width: 100%;
+  line-height: 1.5rem;
+  min-height: 5rem;
+  resize: none;
+  white-space: pre-wrap;
+  background-color: white;
+  display: block;
+  border-radius: 1rem;
+  padding: .5rem;
+  box-sizing: border-box;
 }

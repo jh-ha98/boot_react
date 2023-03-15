@@ -6,7 +6,7 @@ import lombok.ToString;
 @Getter
 @ToString
 public class BoardUpdateForm {
-  private Long boardId;
+  private Long id;
   private String title;
   private String content;
 }
