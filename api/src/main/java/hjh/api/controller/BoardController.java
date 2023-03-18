@@ -18,6 +18,7 @@ import hjh.api.domain.dto.board.BoardInfo;
 import hjh.api.domain.dto.board.BoardWriteForm;
 import hjh.api.domain.dto.board.BoardUpdateForm;
 import hjh.api.domain.dto.common.MessageBox;
+import hjh.api.domain.entity.Board;
 import hjh.api.domain.type.MessageBoxValid;
 import hjh.api.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -50,9 +51,9 @@ public class BoardController {
 
   /** 게시글 작성 */
   @PostMapping("/board/write")
-  public ResponseEntity<MessageBox> boardWrite(@RequestBody BoardWriteForm form, HttpServletRequest request)
+  public ResponseEntity<MessageBox<Board>> boardWrite(@RequestBody BoardWriteForm form, HttpServletRequest request)
       throws Exception {
-    MessageBox result = boardService.write(form, request);
+    MessageBox<Board> result = boardService.write(form, request);
     MessageBoxValid valid = (MessageBoxValid) result.getValid();
     if (valid == MessageBoxValid.FALSE)
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
@@ -62,9 +63,10 @@ public class BoardController {
 
   /** 게시글 삭제 */
   @DeleteMapping("/board/delete/{boardId}")
-  public ResponseEntity<MessageBox> boardDelete(@PathVariable("boardId") Long boardId, HttpServletRequest request)
+  public ResponseEntity<MessageBox<Boolean>> boardDelete(@PathVariable("boardId") Long boardId,
+      HttpServletRequest request)
       throws Exception {
-    MessageBox result = boardService.delete(boardId, request);
+    MessageBox<Boolean> result = boardService.delete(boardId, request);
     MessageBoxValid valid = (MessageBoxValid) result.getValid();
     if (valid == MessageBoxValid.FALSE)
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
@@ -74,9 +76,10 @@ public class BoardController {
 
   /** 게시글 수정 */
   @PutMapping("/board/update")
-  public ResponseEntity<MessageBox> boardUpdate(@RequestBody BoardUpdateForm form, HttpServletRequest request)
+  public ResponseEntity<MessageBox<BoardInfo>> boardUpdate(@RequestBody BoardUpdateForm form,
+      HttpServletRequest request)
       throws Exception {
-    MessageBox result = boardService.update(form, request);
+    MessageBox<BoardInfo> result = boardService.update(form, request);
     MessageBoxValid valid = (MessageBoxValid) result.getValid();
     if (valid == MessageBoxValid.FALSE)
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);

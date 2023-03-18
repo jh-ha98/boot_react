@@ -24,8 +24,6 @@ const SignUp = () => {
       email: emailRef.current.value
     };
 
-    console.log(param);
-
     axios.post('/api/member/sign-up', param)
       .then((res) => {
         const member = res.data.body;
@@ -87,8 +85,6 @@ const SignUp = () => {
         </form>
       </div>
     </section>
-
-
   );
 }
 

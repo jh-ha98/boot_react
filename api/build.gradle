@@ -25,6 +25,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	// spring boot web 필수라이브러리
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	// spring 유효성 검사 라이브러리
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	// java 유용한 어노테이션 라이브러리
 	compileOnly 'org.projectlombok:lombok'
 	// spring 개발 필수라이브러리(hot reload, live code...)

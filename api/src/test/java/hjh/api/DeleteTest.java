@@ -34,7 +34,7 @@ public class DeleteTest {
 
     // 실제 HttpSession 을 사용할 수 없으니, MockHttpSession 을 사용하여 검증로직을 작성
     HttpServletRequest request = new MockHttpServletRequest();
-    MessageBox box = boardService.delete(123L, request);
+    MessageBox<Boolean> box = boardService.delete(123L, request);
 
     System.out.println(box.getMsg());
 
@@ -62,7 +62,7 @@ public class DeleteTest {
 
     request.getSession().setAttribute("member", sessionMemberInfo); // 세션에서 로그인한 멤버
 
-    MessageBox box = boardService.delete(findBoard.getId(), request); // boardId로 게시글 삭제
+    MessageBox<Boolean> box = boardService.delete(findBoard.getId(), request); // boardId로 게시글 삭제
 
     System.out.println(box.getMsg());
 
@@ -88,7 +88,7 @@ public class DeleteTest {
 
     request.getSession().setAttribute("member", sessionMemberInfo);
 
-    MessageBox box = boardService.delete(findBoard.getId(), request);
+    MessageBox<Boolean> box = boardService.delete(findBoard.getId(), request);
 
     System.out.println(box.getMsg());
 

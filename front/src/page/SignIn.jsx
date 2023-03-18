@@ -18,7 +18,6 @@ const SignIn = () => {
     axios.post('/api/member/sign-in', param)
       .then((res) => {
         const member = res.data.body;
-        console.log(res);
         alert(res.data.msg);
         setMember(member);
       })
