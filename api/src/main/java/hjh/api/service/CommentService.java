@@ -95,12 +95,15 @@ public class CommentService {
 
       findComment.changeComment(comment);
 
+      if (findComment.getComment().equals(""))
+        return new MessageBox(MessageBoxValid.FALSE, "내용을 입력해 주세요!");
+
       Comment savedComment = commentRepository.save(findComment);
       CommentInfo commentInfo = CommentInfo.generate(savedComment);
       return new MessageBox(MessageBoxValid.TRUE, "댓글이 수정 되었습니다.", commentInfo);
 
     } catch (Exception e) {
-      log.error("boardDUpdate error:", e);
+      log.error("commentUpdate error:", e);
 
       return new MessageBox(MessageBoxValid.FALSE, "알수없는 에러.");
     }

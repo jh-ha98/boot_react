@@ -14,6 +14,7 @@ const BoardDetail = () => {
   const [textarea, setTextarea] = useState('');
   const commentRef = useRef();
   const navigate = useNavigate();
+  const contentRef = useRef();
 
   useEffect(() => {
     const boardId = params.boardId;
@@ -101,7 +102,7 @@ const BoardDetail = () => {
     event.preventDefault();
 
     console.log(commentRef.current.value)
-    const commentParam = { comment: textarea };
+    const commentParam = { comment: contentRef.current.innerText };
 
     if (!confirm('댓글을 수정하시겠습니까?')) return;
     axios.put(`/api/comment/update/${commentId}`, commentParam)
@@ -121,7 +122,7 @@ const BoardDetail = () => {
           if (comment.commentId === commentId) {
             const copyComment = { ...comment };
             copyComment.editable = false;
-            copyComment.comment = textarea;
+            copyComment.comment = contentRef.current.innerText;
             return copyComment;
           } else {
             return comment;
@@ -137,10 +138,6 @@ const BoardDetail = () => {
         console.log(error);
         alert(error.response.data.msg);
       });
-  };
-
-  const onChangeTextarea = (event) => {
-    setTextarea(event.target.value);
   };
 
   const onClickDeleteBoard = (boardId) => (event) => {
@@ -172,7 +169,7 @@ const BoardDetail = () => {
           <div className={style['comment-left-box']}>
             <div>{comment.loginId}</div>
             {comment.editable
-              ? <span className={style['text-comment-content']} onChange={onChangeTextarea} contentEditable suppressContentEditableWarning>{textarea}</span>
+              ? <span className={style['text-comment-content']} ref={contentRef} contentEditable suppressContentEditableWarning>{textarea}</span>
               : (<pre className={style['text-comment']}>{comment.comment}</pre>)
             }
             <div className={style.createTimeStr}>{comment.createTimeStr}</div>
@@ -180,8 +177,8 @@ const BoardDetail = () => {
 
           {comment.editable
             ? (<>
-              <img src={deleteImg} className={style['img-button']} onClick={onClickDelete(comment.commentId)} />
-              <button onClick={onClickUpdateBack2(comment)} className={style['update-button']}>취소</button>
+              {/* <img src={deleteImg} className={style['img-button']} onClick={onClickDelete(comment.commentId)} /> */}
+              <img src={deleteImg}  onClick={onClickUpdateBack2(comment)} className={style['img-button']}/>
               <button className={style['update-button']} onClick={onClickUpdate(comment.commentId)}>확인</button>
             </>)
             : (<>
@@ -197,8 +194,8 @@ const BoardDetail = () => {
         <div className={style['comment-right-wrap']} key={index}>
           {comment.editable
             ? (<>
-              <img src={deleteImg} className={style['img-button']} onClick={onClickDelete(comment.commentId)} />
-              <button onClick={onClickUpdateBack2(comment)} className={style['update-button']}>취소</button>
+              {/* <img src={deleteImg} className={style['img-button']} onClick={onClickDelete(comment.commentId)} /> */}
+              <img src={deleteImg} onClick={onClickUpdateBack2(comment)} className={style['img-button']}/>
               <button className={style['update-button']} onClick={onClickUpdate(comment.commentId)}>확인</button>
             </>)
             : (<>
@@ -209,7 +206,7 @@ const BoardDetail = () => {
           <div className={style['comment-right-box']}>
             <div style={{ textAlign: "end" }}>{comment.loginId}</div>
             {comment.editable
-              ? <span className={style['text-comment-content']} onChange={onChangeTextarea} contentEditable suppressContentEditableWarning>{textarea}</span>
+              ? <span className={style['text-comment-content']} ref={contentRef} contentEditable suppressContentEditableWarning>{textarea}</span>
               : (<pre className={style['text-comment']}>{comment.comment}</pre>)
             }
             <div className={style.createTimeStr}>{comment.createTimeStr}</div>
@@ -259,7 +256,7 @@ const BoardDetail = () => {
         </div>
 
         <div>
-          <textarea className={style.textarea} maxLength="100" ref={commentRef} placeholder='댓글을 입력하세요' contentEditable suppressContentEditableWarning/>
+          <textarea className={style.textarea} maxLength="100" ref={commentRef} placeholder='댓글을 입력하세요' contentEditable suppressContentEditableWarning />
         </div>
         <button onClick={onClickCreateComment} className={buttonStyle['default-button']}>댓글달기</button>
       </section>

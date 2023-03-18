@@ -42,13 +42,21 @@
   font-size: 1rem;
   box-sizing: border-box;
   white-space: pre-wrap;
+  background-color: rgb(209, 191, 245);
+  border-radius: .5rem;
+  padding: .5rem;
+  border: none;
+  outline: none;
 }
 
-.textarea[placeholder]:empty:before {
+.textarea:focus {
+  box-shadow: 0 0 0 .1rem rgb(103, 64, 182);
+}
+
+.textarea::placeholder {
   display: block;
   content: attr(placeholder);
-  color: #000;
-  overflow: hidden;
+  color: rgb(103, 64, 182);
 }
 
 .section-box {
@@ -150,13 +158,14 @@
   min-height: 5rem;
   resize: none;
   white-space: pre-wrap;
+  margin: 0;
 }
 
 .text-comment-content {
   overflow-wrap: break-word;
   width: 100%;
   line-height: 1.5rem;
-  min-height: 5rem;
+  min-height: 6rem;
   resize: none;
   white-space: pre-wrap;
   background-color: white;
