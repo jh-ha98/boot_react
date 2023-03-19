@@ -1,28 +1,29 @@
 /* eslint-disable */
 import axios from 'axios';
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useReducer } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import style from './style.module.css';
 import buttonStyle from '../../style/buttons.module.css';
 import Comment from '../../component/BoardDetail/Comment';
+import { CREATE_COMMENT, DELETE_COMMENT, DISENABLE_EDITING, EDIT_COMMENT, ENABLE_EDITING, GET_BOARD_LIST, initialState, reducer } from './reducer';
 
 const BoardDetail = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const [board, setBoard] = useState({});
+  const [board, dispatch] = useReducer(reducer, initialState);
   const commentRef = useRef();
 
   useEffect(() => {
     const boardId = params.boardId;
 
     axios.get(`/api/board/list/${boardId}`)
-      .then((res) => {
-        const boardData = res.data;
-        setBoard(boardData);
+      .then(res => {
+        dispatch({ type: GET_BOARD_LIST, payload: res.data });
       })
       .catch((error) => {
         console.error(error);
       });
+
   }, []);
 
   const onClickCreateComment = useCallback(() => {
@@ -32,18 +33,8 @@ const BoardDetail = () => {
     };
 
     axios.post('/api/comment/write', param)
-      .then((res) => {
-        const comment = res.data.body;
-
-        // 전개구문 사용하기
-        const newBoard = {
-          ...board,
-          comments: [
-            ...board.comments,
-            comment
-          ]
-        };
-        setBoard(newBoard);
+      .then(res => {
+        dispatch({ type: CREATE_COMMENT, payload: res.data });
         commentRef.current.value = '';
         alert(res.data.msg);
       })
@@ -57,14 +48,10 @@ const BoardDetail = () => {
     event.preventDefault();
 
     if (!confirm('댓글을 삭제하시겠습니까?')) return;
+
     axios.delete(`/api/comment/delete/${commentId}`)
       .then((res) => {
-        console.log(res);
-        const newBoardDetail = {
-          ...board,
-          comments: board.comments.filter(comments => comments.commentId !== commentId)
-        };
-        setBoard(newBoardDetail);
+        dispatch({ type: DELETE_COMMENT, payload: commentId });
         alert(res.data.msg);
       })
       .catch((error) => {
@@ -74,23 +61,11 @@ const BoardDetail = () => {
   };
 
   const onClickEnableEditing = (commentId) => () => {
-    const newComments = board.comments.map(comment => {
-      const editable = comment.commentId === commentId ? true : false;
-      return { ...comment, editable };
-    });
-
-    const newBoard = {
-      ...board,
-      comments: newComments
-    };
-
-    setBoard(newBoard);
+    dispatch({ type: ENABLE_EDITING, payload: commentId });
   };
 
   const onClickDisableEditing = (comment) => () => {
-    comment.editable = false;
-    const newBoard = { ...board };
-    setBoard(newBoard);
+    dispatch({ type: DISENABLE_EDITING, payload: comment });
   };
 
   const onClickEditComment = (event, commentId, content) => {
@@ -101,21 +76,7 @@ const BoardDetail = () => {
 
     axios.put(`/api/comment/update/${commentId}`, commentParam)
       .then((res) => {
-        const copyBoard = { ...board };
-
-        const newComments = copyBoard.comments.map((comment) => {
-          if (comment.commentId === commentId) {
-            const copyComment = { ...comment };
-            copyComment.editable = false;
-            copyComment.comment = content;
-            return copyComment;
-          } else {
-            return comment;
-          }
-        });
-
-        copyBoard.comments = newComments;
-        setBoard(copyBoard);
+        dispatch({ type: EDIT_COMMENT, payload: { commentId, content } });
         alert(res.data.msg);
       })
       .catch((error) => {
@@ -131,9 +92,7 @@ const BoardDetail = () => {
 
     axios.delete(`/api/board/delete/${boardId}`)
       .then((res) => {
-        const deleteBoard = { ...board };
         alert(res.data.msg);
-        setBoard(deleteBoard);
         navigate('/board/list');
       })
       .catch((error) => {
