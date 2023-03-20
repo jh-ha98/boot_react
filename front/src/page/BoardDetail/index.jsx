@@ -1,30 +1,20 @@
 /* eslint-disable */
 import axios from 'axios';
-import React, { useCallback, useEffect, useRef, useReducer } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import useSWR from 'swr';
 import style from './style.module.css';
 import buttonStyle from '../../style/buttons.module.css';
 import Comment from '../../component/BoardDetail/Comment';
-import { CREATE_COMMENT, DELETE_COMMENT, DISENABLE_EDITING, EDIT_COMMENT, ENABLE_EDITING, GET_BOARD_LIST, initialState, reducer } from './reducer';
+import { writeComment } from './action';
+
+const boardDetailFetcher = url => axios.get(url).then(res => res.data);
 
 const BoardDetail = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const [board, dispatch] = useReducer(reducer, initialState);
+  const { data: board, isLoading, mutate } = useSWR(`/api/board/list/${params.boardId}`, boardDetailFetcher);
   const commentRef = useRef();
-
-  useEffect(() => {
-    const boardId = params.boardId;
-
-    axios.get(`/api/board/list/${boardId}`)
-      .then(res => {
-        dispatch({ type: GET_BOARD_LIST, payload: res.data });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-
-  }, []);
 
   const onClickCreateComment = useCallback(() => {
     const param = {
@@ -32,16 +22,8 @@ const BoardDetail = () => {
       comment: commentRef.current.value,
     };
 
-    axios.post('/api/comment/write', param)
-      .then(res => {
-        dispatch({ type: CREATE_COMMENT, payload: res.data });
-        commentRef.current.value = '';
-        alert(res.data.msg);
-      })
-      .catch((err) => {
-        console.error(err);
-        alert(err.response.data.msg);
-      });
+    writeComment(mutate, param);
+    commentRef.current.value = '';
   }, [board]);
 
   const onClickDeleteComment = (commentId) => (event) => {
@@ -51,21 +33,33 @@ const BoardDetail = () => {
 
     axios.delete(`/api/comment/delete/${commentId}`)
       .then((res) => {
-        dispatch({ type: DELETE_COMMENT, payload: commentId });
         alert(res.data.msg);
+        mutate();
       })
       .catch((error) => {
         console.log(error);
         alert(error.response.data.msg);
-      })
+      });
   };
 
   const onClickEnableEditing = (commentId) => () => {
-    dispatch({ type: ENABLE_EDITING, payload: commentId });
+    const newComments = board.comments.map(comment => {
+      const editable = comment.commentId === commentId ? true : false;
+      return { ...comment, editable };
+    });
+
+    const newBoard = {
+      ...board,
+      comments: newComments
+    };
+
+    mutate(newBoard, { revalidate: false });
   };
 
   const onClickDisableEditing = (comment) => () => {
-    dispatch({ type: DISENABLE_EDITING, payload: comment });
+    comment.editable = false;
+    const newBoard = { ...board, comments: board.comments.map(comment => ({ ...comment })) };
+    mutate(newBoard, { revalidate: false });
   };
 
   const onClickEditComment = (event, commentId, content) => {
@@ -76,7 +70,7 @@ const BoardDetail = () => {
 
     axios.put(`/api/comment/update/${commentId}`, commentParam)
       .then((res) => {
-        dispatch({ type: EDIT_COMMENT, payload: { commentId, content } });
+        mutate();
         alert(res.data.msg);
       })
       .catch((error) => {
@@ -100,6 +94,8 @@ const BoardDetail = () => {
         alert(error.response.data.msg);
       });
   };
+
+  if (isLoading) return <div>로딩중...</div>;
 
   return (
     <div className={style.wrap}>
