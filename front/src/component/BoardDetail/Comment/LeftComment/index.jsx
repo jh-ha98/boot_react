@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useRef } from 'react';
 import style from './style.module.css';
 import deleteImg from '../../../../resources/img/x.png';
@@ -9,7 +10,7 @@ const LeftComment = ({ comment, onClickEnableEditing, onClickDisableEditing, onC
   const _onClickEditComment = (commentId) => (event) => onClickEditComment(event, commentId, contentRef.current.innerText);
 
   return (<>
-    <div className={style['comment-wrap']}>
+    <div className={style['comment-left-wrap']}>
       <div className={style['comment-left-box']}>
         <div>{comment.loginId}</div>
         {comment.editable

@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
+import style from './style.module.css';
 
 const SignUp = () => {
   const [checked, setChecked] = useState(false);
@@ -66,26 +67,28 @@ const SignUp = () => {
     );
   }
 
-  return (
-    <section id='sign-in-wrap'>
-      <div id='sign-in-inner-wrap'>
-        <form id='sign-up-form'>
-          <div id='input-wrap'>
-            <label htmlFor='sign-up-id'>ID</label>
-            <div className='id-box'>
-              <input id='sign-up-id' ref={loginIdRef} value={loginId} onChange={onChangeLoginId} autoFocus/>
-              <input className='button-check-id' type='button' value='중복확인' onClick={onClickCheckId} />
+  return <>
+    <article className={style.article}>
+      <section className={style[`sign-up-wrap`]}>
+        <div className={style[`sign-up-inner-wrap`]}>
+          <form className={style[`sign-up-form`]}>
+            <div id='input-wrap'>
+              <label className={style[`sign-up-label`]}>ID</label>
+              <div className={style[`id-box`]}>
+                <input className={style[`sign-up-id`]} ref={loginIdRef} value={loginId} onChange={onChangeLoginId} autoFocus />
+                <button className={style[`check-id-button`]} onClick={onClickCheckId}>중복확인</button>
+              </div>
+              <label className={style[`sign-up-label`]}>Password</label>
+              <input className={style[`sign-up-input`]} ref={passwordRef} type='password' />
+              <label className={style[`sign-up-label`]}>Email</label>
+              <input className={style[`sign-up-input`]} ref={emailRef} type='email' />
             </div>
-            <label>Password</label>
-            <input ref={passwordRef} type='password' />
-            <label>Email</label>
-            <input ref={emailRef} type='email' />
-          </div>
-          <input type='button' value='회원가입' onClick={onClickSignUp} />
-        </form>
-      </div>
-    </section>
-  );
+            <button className={style[`sign-up-button`]} onClick={onClickSignUp}>회원가입</button>
+          </form>
+        </div>
+      </section>
+    </article>
+  </>
 }
 
 export default SignUp;

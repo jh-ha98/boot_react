@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useRef } from 'react';
 import style from './style.module.css';
 import deleteImg from '../../../../resources/img/x.png';

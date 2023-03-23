@@ -1,3 +1,27 @@
+.main-header {
+  background-color: mediumpurple;
+  display: flex;
+  height: 3rem;
+
+  /* 중심축에서 아이템 배치 */
+  justify-content: center;
+
+  flex-direction: column;
+  color: whitesmoke;
+}
+
+.main-header a {
+  color: whitesmoke;
+}
+
+.top-bar-wrap {
+  display: flex;
+
+  /* 아이템 사이에 간격 맞추기 */
+  justify-content: space-between;
+  margin: 1rem;
+}
+
 .wrap {
   flex: 1;
   display: flex;
@@ -7,19 +31,17 @@
 .inner-wrap {
   flex: 1;
   overflow: auto;
-  padding: 1rem;
+  padding: .7rem;
 }
 
 .side-bar {
   background-color: rgb(177, 149, 233);
   width: 15rem;
-  transition: .1s;
 }
 
 .hide {
   background-color: rgb(177, 149, 233);
   width: calc(1.4rem + 2 * 0.1rem + 2 * 1rem);
-  transition: .1s;
   white-space: nowrap;
   overflow-x: hidden;
 }

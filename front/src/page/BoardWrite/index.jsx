@@ -1,10 +1,10 @@
-import axios from "axios";
-import React from "react";
-import { useState } from "react";
-import { useRef } from "react";
-import { Navigate } from "react-router-dom";
-import buttonStyle from "../../style/buttons.module.css";
-import style from "./style.module.css";
+import axios from 'axios';
+import React from 'react';
+import { useState } from 'react';
+import { useRef } from 'react';
+import { Navigate } from 'react-router-dom';
+import buttonStyle from '../../style/buttons.module.css';
+import style from './style.module.css';
 
 const BoardWrite = () => {
   const [list, setList] = useState();
@@ -41,8 +41,8 @@ const BoardWrite = () => {
   return <>
     <article className={style.article}>
       <header className={style.header}>
-        <h2 className={style["header-title"]}>글쓰기</h2>
-        <button className={`${buttonStyle["default-button"]} ${style.button}`} onClick={onClicWrite}>등록</button>
+        <h2 className={style['header-title']}>글쓰기</h2>
+        <button className={`${buttonStyle['default-button']} ${style.button}`} onClick={onClicWrite}>등록</button>
       </header>
       <section>
         <input ref={titleRef} className={style.title} placeholder='제목을 입력해주세요.' />

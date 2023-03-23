@@ -9,6 +9,7 @@
 - [REST API](#rest-api)
 - [Gradle](#gradle)
 - [JPA](#jpa)
+- [Generic](#generic)
 
 ## Java
 객체지향형 언어.
@@ -41,6 +42,8 @@ java -jar -Dspring.profiles.active=prod [파일명].jar &
     - 스프링진영 대표 OOP.
 - `org.postgresql:postgresql` 
     - postgresql 데이터베이스 드라이버.
+- `org.springframework.boot:spring-boot-starter-validation`
+    - 스프링 유효성 검사 라이브러리.
 
 ## API 서버 계층구조
 - `controller`
@@ -97,3 +100,20 @@ AuditingListener를 제공해 특정한 이벤트에 대해 자동으로 반응�
 - `@LastModifiedDate`: 수정 시간
 - `@CreatedBy`: 생성자
 - `@LastModifiedBy`: 수정자
+
+## Generic
+클래스에서 사용할 타입을 외부에서 선언하는 것
+선언할 때 파라미터가 구체적인 타입으로 결정
+- 사용하는 이유: 잘못된 타입이 사용될 수 있는 문제를 컴파일 과정에서 제거할 수 있다.
+### 사용법
+- public class 클래스명&lt;T&gt; {...}
+- public interface 인터페이스명&lt;T&gt; {...}
+### 자주사용하는 타입인자
+|타입인자|설명|
+|-|-|
+|&lt;T&gt;|Type|
+|&lt;E&gt;|Element|
+|&lt;K&gt;|Key|
+|&lt;N&gt;|Number|
+|&lt;V&gt;|Value|
+|&lt;R&gt;|Result|

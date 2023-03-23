@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
+import style from './style.module.css';
 
 const SignIn = () => {
   const [member, setMember] = useState(null);
@@ -33,21 +34,23 @@ const SignIn = () => {
     );
   }
 
-  return (
-    <section id='sign-in-wrap'>
-      <div id='sign-in-inner-wrap'>
-        <form id='sign-in-form'>
-          <div id='input-wrap'>
-            <label htmlFor='login-id'>ID</label>
-            <input id='login-id' ref={loginIdRef} autoFocus />
-            <label>Password</label>
-            <input type='password' ref={passwordRef} />
-          </div>
-          <button onClick={onClickLogin}>로그인</button>
-        </form>
-      </div>
-    </section>
-  );
+  return <>
+    <article className={style.article}>
+      <section className={style[`sign-in-wrap`]}>
+        <div className={style[`sign-in-inner-wrap`]}>
+          <form className={style[`sign-in-form`]}>
+            <div id='input-wrap'>
+              <label className={style[`sign-in-label`]}>ID</label>
+              <input className={style[`sign-in-input`]} ref={loginIdRef} autoFocus />
+              <label className={style[`sign-in-label`]}>Password</label>
+              <input className={style[`sign-in-input`]} type='password' ref={passwordRef} />
+            </div>
+            <button className={style[`sign-in-button`]} onClick={onClickLogin}>로그인</button>
+          </form>
+        </div>
+      </section>
+    </article>
+  </>;
 };
 
 export default SignIn;

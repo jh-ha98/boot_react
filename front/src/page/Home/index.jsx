@@ -45,10 +45,10 @@ const Home = () => {
 
   return (
     <>
-      <header id='main-header'>
-        <div id='top-bar-wrap'>
+      <header className={style['main-header']}>
+        <div className={style['top-bar-wrap']}>
           <div className={style.menuWrap}>
-            <img src={menuImg} className={style['menu']} onClick={onClickMenu} />
+            <img src={menuImg} className={style.menu} onClick={onClickMenu} />
             <div>logo</div>
           </div>
           <div>
@@ -68,10 +68,10 @@ const Home = () => {
       <section className={style.wrap}>
         <nav className={sideMenu ? show : hide}>
           <Link to='/' className={style['side-link']}>
-            <img src={homeImg} className={style['home']} /> 홈
+            <img src={homeImg} className={style.home} /> 홈
           </Link>
           <Link to='/board/list' className={style['side-link']}>
-            <img src={boardImg} className={style['board']} /> 게시판
+            <img src={boardImg} className={style.board} /> 게시판
           </Link>
         </nav>
         <section className={style['inner-wrap']}>

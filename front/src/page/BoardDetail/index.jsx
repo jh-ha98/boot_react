@@ -6,9 +6,7 @@ import useSWR from 'swr';
 import style from './style.module.css';
 import buttonStyle from '../../style/buttons.module.css';
 import Comment from '../../component/BoardDetail/Comment';
-import { writeComment } from './action';
-
-const boardDetailFetcher = url => axios.get(url).then(res => res.data);
+import { boardDetailFetcher, createComment } from './action';
 
 const BoardDetail = () => {
   const params = useParams();
@@ -22,62 +20,9 @@ const BoardDetail = () => {
       comment: commentRef.current.value,
     };
 
-    writeComment(mutate, param);
+    createComment(mutate, param);
     commentRef.current.value = '';
   }, [board]);
-
-  const onClickDeleteComment = (commentId) => (event) => {
-    event.preventDefault();
-
-    if (!confirm('댓글을 삭제하시겠습니까?')) return;
-
-    axios.delete(`/api/comment/delete/${commentId}`)
-      .then((res) => {
-        alert(res.data.msg);
-        mutate();
-      })
-      .catch((error) => {
-        console.log(error);
-        alert(error.response.data.msg);
-      });
-  };
-
-  const onClickEnableEditing = (commentId) => () => {
-    const newComments = board.comments.map(comment => {
-      const editable = comment.commentId === commentId ? true : false;
-      return { ...comment, editable };
-    });
-
-    const newBoard = {
-      ...board,
-      comments: newComments
-    };
-
-    mutate(newBoard, { revalidate: false });
-  };
-
-  const onClickDisableEditing = (comment) => () => {
-    comment.editable = false;
-    const newBoard = { ...board, comments: board.comments.map(comment => ({ ...comment })) };
-    mutate(newBoard, { revalidate: false });
-  };
-
-  const onClickEditComment = (event, commentId, content) => {
-    event.preventDefault();
-    const commentParam = { comment: content };
-
-    if (!confirm('댓글을 수정하시겠습니까?')) return;
-
-    axios.put(`/api/comment/update/${commentId}`, commentParam)
-      .then((res) => {
-        mutate();
-        alert(res.data.msg);
-      })
-      .catch((error) => {
-        console.error(error);
-        alert(error.response.data.msg);
-      });
-  };
 
   const onClickDeleteBoard = (boardId) => (event) => {
     event.preventDefault();
@@ -132,15 +77,7 @@ const BoardDetail = () => {
         <hr className={style.hr} />
         <h3>댓글</h3>
         <div className={style['section-box']}>
-          {board?.comments?.map((comment, index) => <Comment
-            key={index}
-            boardLoginId={board.loginId}
-            comment={comment}
-            onClickEnableEditing={onClickEnableEditing}
-            onClickDisableEditing={onClickDisableEditing}
-            onClickEditComment={onClickEditComment}
-            onClickDeleteComment={onClickDeleteComment}
-          />)}
+          {board?.comments?.map((comment, index) => <Comment key={index} boardLoginId={board.loginId} comment={comment} />)}
         </div>
 
         <div>
