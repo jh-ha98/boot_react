@@ -19,11 +19,14 @@ const SignIn = () => {
     axios.post('/api/member/sign-in', param)
       .then((res) => {
         const member = res.data.body;
+        console.log(res.data)
         alert(res.data.msg);
         setMember(member);
       })
       .catch((err) => {
         console.log(err);
+        console.log(err.response.data.msg)
+        console.log(err.message)
         alert(err.response.data.msg);
       });
   };

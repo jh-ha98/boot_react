@@ -10,6 +10,7 @@
 - [Gradle](#gradle)
 - [JPA](#jpa)
 - [Generic](#generic)
+- [SpringBoot Validation](#springBoot-validation)
 
 ## Java
 객체지향형 언어.
@@ -117,3 +118,67 @@ AuditingListener를 제공해 특정한 이벤트에 대해 자동으로 반응�
 |&lt;N&gt;|Number|
 |&lt;V&gt;|Value|
 |&lt;R&gt;|Result|
+
+## SpringBoot Validation
+Validation : 데이터 검사
+
+Bean Validation : validator가 어떠한 비즈니스적 로직에 대한 검증이 아닌, 그 클래스로 생성된 객체 자체의 필드에 대한 유효성 여부를 검증합니다.
+
+```
+@Valid, @Validated 차이
+- @Valid는 Java 에서 지원해주는 어노테이션
+- @Validated는 Spring에서 지원해주는 어노테이션
+- @Validated는 @Valid의 기능을 포함하고, 유효성을 검토할 그룹을 지정할 수 있는 기능을 추가로 가집니다.
+```
+
+1. build.gradle에 dependency 추가
+    ```java
+    implementation 'org.springframeworboot:spring-boot-starter-validation'
+    ```
+2. Contoller에서 유효성 검사를 적용할 API의 Request객체 앞에 @validated 어노테이션을 추가
+- BindingResult 객체 : 검증 오류가 발생할 경우 오류 내용을 보관하는 스프링 프레임워크에서 제공하는 객체
+
+- BindingResult객체를 사용하면 데이터 검증 결과를 담고 있습니다.
+- service에서 try~ catch의 범용적인 메시지를 하나하나 지정할 필요없게 되고 알수없는 에러 처리를 하지 않아도 에러 메시지를 관리하기 편리하게 됩니다.
+
+- 주의) BindingResult는 검증할 대상 다음에 와야합니다.
+
+    ```java
+     /** 회원 가입 */
+    @PostMapping("/member/sign-up")
+    public ResponseEntity<MessageBox<MemberInfo>> signUp(@RequestBody @Validated MemberSignUpForm form,
+      BindingResult bindingResult) {
+    if (bindingResult.hasErrors())
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(MessageBox.failed(bindingResult));
+
+    MessageBox<MemberInfo> result = memberService.signUp(form);
+    MessageBoxValid valid = (MessageBoxValid) result.getValid();
+    if (valid == MessageBoxValid.FALSE)
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+
+    return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+    ```
+3. Request를 핸들링할 객체를 정의할 때 Validation 어노테이션을 통해 필요한 유효성 검사를 적용
+    ```java
+    package hjh.api.domain.dto.member;
+
+    import javax.validation.constraints.NotEmpty;
+
+    import lombok.Getter;
+    import lombok.ToString;
+
+    @Getter
+    @ToString
+    public class MemberSignUpForm {
+
+    @NotEmpty(message = "아이디를 입력해주세요.")
+    private String loginId;
+  
+    @NotEmpty(message = "비밀번호를 입력해주세요.")
+    private String password;
+  
+    @NotEmpty(message = "이메일을 입력해주세요.")
+    private String email;
+    }
+    ```

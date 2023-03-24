@@ -44,15 +44,8 @@ public class MemberService {
     return new MessageBox<>(MessageBoxValid.TRUE, "회원가입을 성공했습니다.", memberInfo);
   }
 
-  public MessageBox<MemberInfo> signIn(MemberSignInForm form, HttpServletRequest request) throws Exception {
-    try {
-      if (form.getLoginId().equals("")) {
-        return new MessageBox<>(MessageBoxValid.FALSE, "아이디를 입력해주세요.");
-      }
-      if (form.getPassword().equals("")) {
-        return new MessageBox<>(MessageBoxValid.FALSE, "비밀번호를 입력해주세요.");
-      }
-
+  @Transactional
+  public MessageBox<MemberInfo> signIn(MemberSignInForm form, HttpServletRequest request) {
       Member findMember = memberRepository.findByLoginId(form.getLoginId()).orElse(null);
 
       if (findMember == null)
@@ -67,11 +60,6 @@ public class MemberService {
       HttpSession session = request.getSession();
       session.setAttribute(SESSION_KEY, memberInfo);
       return new MessageBox<>(MessageBoxValid.TRUE, "로그인 성공!", memberInfo);
-    } catch (Exception e) {
-      log.error("signIn error:", e);
-
-      return new MessageBox<>(MessageBoxValid.FALSE, "알수없는 에러.");
-    }
   }
 
   public MessageBox<String> checkId(String loginId) throws Exception {
