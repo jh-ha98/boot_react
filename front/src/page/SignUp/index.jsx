@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
 import style from './style.module.css';
+import { Secsion, Wrap } from './style';
 
 const SignUp = () => {
   const [checked, setChecked] = useState(false);
@@ -67,14 +68,14 @@ const SignUp = () => {
 
   return <>
     <article className={style.article}>
-      <section className={style[`sign-up-wrap`]}>
-        <div className={style[`sign-up-inner-wrap`]}>
+      <Secsion>
+        <Wrap>
           <form className={style[`sign-up-form`]}>
             <div id='input-wrap'>
               <label className={style[`sign-up-label`]}>ID</label>
               <div className={style[`id-box`]}>
                 <input className={style[`sign-up-id`]} ref={loginIdRef} value={loginId} onChange={onChangeLoginId} autoFocus />
-                <button className={style[`check-id-button`]} onClick={onClickCheckId}>중복확인</button>
+                <button type='button' className={style[`check-id-button`]} onClick={onClickCheckId}>중복확인</button>
               </div>
               <label className={style[`sign-up-label`]}>Password</label>
               <input className={style[`sign-up-input`]} ref={passwordRef} type='password' />
@@ -83,8 +84,8 @@ const SignUp = () => {
             </div>
             <button className={style[`sign-up-button`]} onClick={onClickSignUp}>회원가입</button>
           </form>
-        </div>
-      </section>
+        </Wrap>
+      </Secsion>
     </article>
   </>
 }

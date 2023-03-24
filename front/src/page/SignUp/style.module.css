@@ -15,20 +15,6 @@
   font-size: 2rem;
 }
 
-.sign-up-wrap {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  padding: .5rem;
-  background-color: rgb(210, 192, 247);
-}
-
-.sign-up-inner-wrap {
-  display: flex;
-  justify-content: center;
-}
-
 .sign-up-form {
   height: 20rem;
   padding: 2rem;

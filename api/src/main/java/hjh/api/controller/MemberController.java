@@ -44,10 +44,10 @@ public class MemberController {
 
   /** 회원 인증 */
   @PostMapping("/member/sign-in")
-  public ResponseEntity<MessageBox<MemberInfo>> signIn(@RequestBody @Validated MemberSignInForm form,
-      HttpServletRequest request, BindingResult bindingResult) {
+  public ResponseEntity<MessageBox<MemberInfo>> signIn(HttpServletRequest request,
+      @RequestBody @Validated MemberSignInForm form, BindingResult bindingResult) {
     if (bindingResult.hasErrors())
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(MessageBox.failed(bindingResult));
+      return ResponseEntity.status(HttpStatus.ACCEPTED).body(MessageBox.failed(bindingResult));
 
     MessageBox<MemberInfo> result = memberService.signIn(form, request);
     MessageBoxValid valid = (MessageBoxValid) result.getValid();
