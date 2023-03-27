@@ -32,7 +32,9 @@ public class BoardService {
 
   public List<BoardInfo> getBoard() {
     // 게시글이 최신순으로 정렬되도록 Sort추가
-    List<Board> boards = boardRepository.findAll(Sort.by(Sort.Direction.DESC, "createTime"));
+    // List<Board> boards = boardRepository.findAll(Sort.by(Sort.Direction.DESC, "createTime"));
+    // List<Board> boards = boardRepository.findAllByOrderByCreateTimeDesc();
+    List<Board> boards = boardRepository.findWithMemberAll3();
     return BoardInfo.generate(boards, false);
   }
 

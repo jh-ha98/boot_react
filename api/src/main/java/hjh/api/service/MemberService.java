@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class MemberService {
 
   private final String SESSION_KEY = "member";
@@ -46,36 +47,30 @@ public class MemberService {
 
   @Transactional
   public MessageBox<MemberInfo> signIn(MemberSignInForm form, HttpServletRequest request) {
-      Member findMember = memberRepository.findByLoginId(form.getLoginId()).orElse(null);
+    Member findMember = memberRepository.findByLoginId(form.getLoginId()).orElse(null);
 
-      if (findMember == null)
-        return new MessageBox<>(MessageBoxValid.FALSE, "존재하지 않은 회원입니다.");
+    if (findMember == null)
+      return new MessageBox<>(MessageBoxValid.FALSE, "존재하지 않은 회원입니다.");
 
-      if (!passwordEncoder.matches(form.getPassword(), findMember.getPassword()))
-        return new MessageBox<>(MessageBoxValid.FALSE, "로그인 실패");
+    if (!passwordEncoder.matches(form.getPassword(), findMember.getPassword()))
+      return new MessageBox<>(MessageBoxValid.FALSE, "로그인 실패");
 
-      MemberInfo memberInfo = new MemberInfo(findMember);
+    MemberInfo memberInfo = new MemberInfo(findMember);
 
-      // 세션에 로그인정보(Member 객체) 등록
-      HttpSession session = request.getSession();
-      session.setAttribute(SESSION_KEY, memberInfo);
-      return new MessageBox<>(MessageBoxValid.TRUE, "로그인 성공!", memberInfo);
+    // 세션에 로그인정보(Member 객체) 등록
+    HttpSession session = request.getSession();
+    session.setAttribute(SESSION_KEY, memberInfo);
+    return new MessageBox<>(MessageBoxValid.TRUE, "로그인 성공!", memberInfo);
   }
 
-  public MessageBox<String> checkId(String loginId) throws Exception {
+  /** 중복확인 */
+  public MessageBox<String> checkId(String loginId) {
+    MessageBox<String> checkResult = checkMember(loginId, "");
 
-    try {
-      MessageBox<String> checkResult = checkMember(loginId, "");
+    if (checkResult.getValid().equals(MessageBoxValid.FALSE))
+      return checkResult;
 
-      if (checkResult.getValid().equals(MessageBoxValid.FALSE))
-        return checkResult;
-
-      return new MessageBox<>(MessageBoxValid.TRUE, "사용할 수 있는 아이디 입니다.", loginId);
-
-    } catch (Exception e) {
-      log.error("checkId error:", e);
-      return new MessageBox<>(MessageBoxValid.FALSE, "알수없는 에러.");
-    }
+    return new MessageBox<>(MessageBoxValid.TRUE, "사용할 수 있는 아이디 입니다.", loginId);
   }
 
   private <T> MessageBox<T> checkMember(String loginId, String email) {
@@ -94,10 +89,9 @@ public class MemberService {
     }
 
     return new MessageBox<>(MessageBoxValid.TRUE, "인증 성공");
-
   }
 
-  public MessageBox<Boolean> signOut(HttpServletRequest request) throws Exception {
+  public MessageBox<Boolean> signOut(HttpServletRequest request) {
 
     try {
       HttpSession session = request.getSession();
@@ -105,12 +99,13 @@ public class MemberService {
 
       return new MessageBox<>(MessageBoxValid.TRUE, "로그아웃 되엇습니다.");
     } catch (Exception e) {
+      log.error("signOut 함수 에러", e);
       return new MessageBox<>(MessageBoxValid.FALSE, "로그아웃 실패");
     }
 
   }
 
-  public MemberInfo getSessionMember(HttpServletRequest request)  {
+  public MemberInfo getSessionMember(HttpServletRequest request) {
     HttpSession session = request.getSession(false);
     if (session == null)
       return null;
@@ -118,7 +113,7 @@ public class MemberService {
     return (MemberInfo) session.getAttribute(SESSION_KEY);
   }
 
-  public MessageBox<MemberInfo> memberInfo(HttpServletRequest request) throws Exception {
+  public MessageBox<MemberInfo> memberInfo(HttpServletRequest request) {
 
     MemberInfo sessionMember = getSessionMember(request);
     if (sessionMember == null) {
