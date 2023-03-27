@@ -47,7 +47,7 @@ public class MemberController {
   public ResponseEntity<MessageBox<MemberInfo>> signIn(HttpServletRequest request,
       @RequestBody @Validated MemberSignInForm form, BindingResult bindingResult) {
     if (bindingResult.hasErrors())
-      return ResponseEntity.status(HttpStatus.ACCEPTED).body(MessageBox.failed(bindingResult));
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(MessageBox.failed(bindingResult));
 
     MessageBox<MemberInfo> result = memberService.signIn(form, request);
     MessageBoxValid valid = (MessageBoxValid) result.getValid();

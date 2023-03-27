@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import hjh.api.domain.dto.board.BoardInfo;
 import hjh.api.domain.dto.board.BoardUpdateForm;
@@ -47,31 +48,19 @@ public class BoardService {
   }
 
   /** 게시글 작성 */
-  public MessageBox<Board> write(BoardWriteForm form, HttpServletRequest request) throws Exception {
+  @Transactional
+  public MessageBox<BoardInfo> write(BoardWriteForm form, HttpServletRequest request) {
     MemberInfo sessionMember = memberService.getSessionMember(request);
 
     if (sessionMember == null)
       return new MessageBox<>(MessageBoxValid.FALSE, "게시글은 인증된 사용자만 작성할 수 있습니다.");
 
-    try {
-      if (form.getTitle().equals("")) {
-        return new MessageBox<>(MessageBoxValid.FALSE, "제목을 입력해 주세요!");
-      }
-      if (form.getContent().equals("")) {
-        return new MessageBox<>(MessageBoxValid.FALSE, "내용을 입력해 주세요!");
-      }
+    Member member = memberRepository.findById(sessionMember.getMemberId()).get();
+    Board board = new Board(form.getTitle(), form.getContent(), member);
+    Board savedBoard = boardRepository.save(board);
+    BoardInfo boardInfo = BoardInfo.generate(savedBoard, false);
 
-      Member member = memberRepository.findById(sessionMember.getMemberId()).get();
-      Board board = new Board(form.getTitle(), form.getContent(), member);
-      Board savedBoard = boardRepository.save(board);
-
-      return new MessageBox<>(MessageBoxValid.TRUE, "게시글이 작성 되었습니다.", savedBoard);
-
-    } catch (Exception e) {
-      log.error("boardWrite error:", e);
-
-      return new MessageBox<>(MessageBoxValid.FALSE, "알수없는 에러.");
-    }
+    return new MessageBox<>(MessageBoxValid.TRUE, "게시글이 작성 되었습니다.", boardInfo);
   }
 
   /** 게시글 삭제 */
@@ -97,29 +86,23 @@ public class BoardService {
   }
 
   /** 게시글 수정 */
-  public MessageBox<BoardInfo> update(BoardUpdateForm form, HttpServletRequest request) throws Exception {
+  public MessageBox<BoardInfo> update(BoardUpdateForm form, HttpServletRequest request) {
     MemberInfo sessionMember = memberService.getSessionMember(request);
 
     if (sessionMember == null)
       return new MessageBox<>(MessageBoxValid.FALSE, "게시글은 인증된 사용자만 수정할 수 있습니다.");
 
-    try {
-      Board findBoard = boardRepository.findById(form.getId()).orElseThrow();
+    Board findBoard = boardRepository.findById(form.getId()).orElseThrow();
 
-      if (!sessionMember.getLoginId().equals(findBoard.getMember().getLoginId()))
-        return new MessageBox<>(MessageBoxValid.FALSE, "본인이 작성한 게시글만 수정 할 수 있습니다.");
+    if (!sessionMember.getLoginId().equals(findBoard.getMember().getLoginId()))
+      return new MessageBox<>(MessageBoxValid.FALSE, "본인이 작성한 게시글만 수정 할 수 있습니다.");
 
-      findBoard.changeBoard(form.getTitle(), form.getContent());
+    findBoard.changeBoard(form.getTitle(), form.getContent());
 
-      Board savedBoard = boardRepository.save(findBoard);
-      BoardInfo boardInfo = BoardInfo.generate(savedBoard, false);
+    Board savedBoard = boardRepository.save(findBoard);
+    BoardInfo boardInfo = BoardInfo.generate(savedBoard, false);
 
-      return new MessageBox<>(MessageBoxValid.TRUE, "게시글이 수정 되었습니다.", boardInfo);
-    } catch (Exception e) {
-      log.error("boardUpdate error:", e);
-
-      return new MessageBox<>(MessageBoxValid.FALSE, "알수없는 에러.");
-    }
+    return new MessageBox<>(MessageBoxValid.TRUE, "게시글이 수정 되었습니다.", boardInfo);
   }
 
 }

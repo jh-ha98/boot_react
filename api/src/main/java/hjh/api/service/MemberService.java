@@ -110,7 +110,7 @@ public class MemberService {
 
   }
 
-  public MemberInfo getSessionMember(HttpServletRequest request) throws Exception {
+  public MemberInfo getSessionMember(HttpServletRequest request)  {
     HttpSession session = request.getSession(false);
     if (session == null)
       return null;

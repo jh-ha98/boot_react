@@ -13,28 +13,29 @@ import lombok.Data;
 @AllArgsConstructor
 public class MessageBox<T> {
 
-    private MessageBoxValid valid;
-    private String msg;
-    private T body;
+  private MessageBoxValid valid;
+  private String msg;
+  private T body;
 
-    public MessageBox(MessageBoxValid valid, String msg) {
-        this.valid = valid;
-        this.msg = msg;
+  public MessageBox(MessageBoxValid valid, String msg) {
+    this.valid = valid;
+    this.msg = msg;
+  }
+
+  /** 실패 메시지를 생성합니다 */
+  public static <T> MessageBox<T> failed(BindingResult bindingResult) {
+    List<ObjectError> errors = bindingResult.getAllErrors();
+    System.out.println(errors);
+
+    String errorMessage = "";
+    for (int i = 0; i < errors.size(); i++) {
+      if (i == 0) {
+        errorMessage = errors.get(i).getDefaultMessage();
+        break;
+      }
     }
 
-    /** 실패 메시지를 생성합니다 */
-    public static <T> MessageBox<T> failed(BindingResult bindingResult) {
-        List<ObjectError> errors = bindingResult.getAllErrors();
-
-        String errorMessage = "";
-        for (int i = 0; i < errors.size(); i++) {
-            if (i == 0) {
-                errorMessage = errors.get(i).getDefaultMessage();
-                break;
-            }
-        }
-
-        return new MessageBox<>(MessageBoxValid.FALSE, errorMessage);
-    }
+    return new MessageBox<>(MessageBoxValid.FALSE, errorMessage);
+  }
 
 }

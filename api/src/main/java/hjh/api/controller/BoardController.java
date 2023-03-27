@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +20,6 @@ import hjh.api.domain.dto.board.BoardInfo;
 import hjh.api.domain.dto.board.BoardWriteForm;
 import hjh.api.domain.dto.board.BoardUpdateForm;
 import hjh.api.domain.dto.common.MessageBox;
-import hjh.api.domain.entity.Board;
 import hjh.api.domain.type.MessageBoxValid;
 import hjh.api.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -51,9 +52,12 @@ public class BoardController {
 
   /** 게시글 작성 */
   @PostMapping("/board/write")
-  public ResponseEntity<MessageBox<Board>> boardWrite(@RequestBody BoardWriteForm form, HttpServletRequest request)
-      throws Exception {
-    MessageBox<Board> result = boardService.write(form, request);
+  public ResponseEntity<MessageBox<BoardInfo>> boardWrite(HttpServletRequest request,
+      @RequestBody @Validated BoardWriteForm form, BindingResult bindingResult) {
+    if (bindingResult.hasErrors())
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(MessageBox.failed(bindingResult));
+
+    MessageBox<BoardInfo> result = boardService.write(form, request);
     MessageBoxValid valid = (MessageBoxValid) result.getValid();
     if (valid == MessageBoxValid.FALSE)
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
@@ -76,9 +80,11 @@ public class BoardController {
 
   /** 게시글 수정 */
   @PutMapping("/board/update")
-  public ResponseEntity<MessageBox<BoardInfo>> boardUpdate(@RequestBody BoardUpdateForm form,
-      HttpServletRequest request)
-      throws Exception {
+  public ResponseEntity<MessageBox<BoardInfo>> boardUpdate(HttpServletRequest request,
+      @RequestBody @Validated BoardUpdateForm form, BindingResult bindingResult) {
+    if (bindingResult.hasErrors())
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(MessageBox.failed(bindingResult));
+
     MessageBox<BoardInfo> result = boardService.update(form, request);
     MessageBoxValid valid = (MessageBoxValid) result.getValid();
     if (valid == MessageBoxValid.FALSE)
