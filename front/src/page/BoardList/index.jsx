@@ -4,9 +4,9 @@ import React, { useMemo } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Link } from 'react-router-dom';
-import buttonStyle from "../../style/buttons.module.css";
+import { DefaultButton } from "../../style/buttons";
 import deleteImg from "../../resources/img/x.png";
-import style from "./style.module.css";
+import { Content, DeleteButton, Info, ListBox, Serach, SerachInput, Title, Wrap } from "./style";
 
 const BoardList = () => {
   const [boardList, setBoardList] = useState([]);
@@ -51,33 +51,32 @@ const BoardList = () => {
     boardList.filter((board) => board.title.toLowerCase().includes(search.toLowerCase())), [boardList, search]);
 
   return (
-    <div className={style.wrap}>
-      <div className={style.search}>
-        <input className={style['search-input']} type="text" value={search} placeholder="검색" onChange={onChangeSearch} />
-      </div>
+    <Wrap>
+      <Serach>
+        <SerachInput type="text" value={search} placeholder="검색" onChange={onChangeSearch} />
+      </Serach>
       <Link to={'/board/write'}>
-        <button className={buttonStyle['default-button']}>글 작성</button>
+        <DefaultButton>글 작성</DefaultButton>
       </Link>
 
       {filteredList.map((board, index) =>
-        <div key={index} className={style['box-wrap']}>
-          <img src={deleteImg} className={style['delete-button']} onClick={onClickDelete(board.boardId)} />
+        <ListBox key={index}>
+          <DeleteButton src={deleteImg} onClick={onClickDelete(board.boardId)} />
 
           <div>
-            <div className={style.title}>
+            <Title>
               <Link to={`/board/list/` + board.boardId}>{board.title}</Link>
-            </div>
-            <div className={style.content}>{board.content}</div>
+            </Title>
+            <Content>{board.content}</Content>
           </div>
 
-          <div className={style.info}>
+          <Info>
             <div>작성자: {board.loginId}</div>
             <div>작성일: {board.createTimeStr}</div>
-          </div>
-        </div>
+          </Info>
+        </ListBox>
       )}
-    </div>
-
+    </Wrap>
   );
 }
 

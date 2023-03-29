@@ -1,8 +1,7 @@
 import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
-import style from './style.module.css';
-import { Secsion, Wrap } from './style';
+import { Article, CheckIdBtn, Form, IdBox, IdInput, Input, Label, Section, SignUpBtn, Wrap } from './style';
 
 const SignUp = () => {
   const [checked, setChecked] = useState(false);
@@ -67,26 +66,26 @@ const SignUp = () => {
   }
 
   return <>
-    <article className={style.article}>
-      <Secsion>
+    <Article>
+      <Section>
         <Wrap>
-          <form className={style[`sign-up-form`]}>
-            <div id='input-wrap'>
-              <label className={style[`sign-up-label`]}>ID</label>
-              <div className={style[`id-box`]}>
-                <input className={style[`sign-up-id`]} ref={loginIdRef} value={loginId} onChange={onChangeLoginId} autoFocus />
-                <button type='button' className={style[`check-id-button`]} onClick={onClickCheckId}>중복확인</button>
-              </div>
-              <label className={style[`sign-up-label`]}>Password</label>
-              <input className={style[`sign-up-input`]} ref={passwordRef} type='password' />
-              <label className={style[`sign-up-label`]}>Email</label>
-              <input className={style[`sign-up-input`]} ref={emailRef} type='email' />
+          <Form>
+            <div>
+              <Label>ID</Label>
+              <IdBox>
+                <IdInput ref={loginIdRef} value={loginId} onChange={onChangeLoginId} autoFocus />
+                <CheckIdBtn type='button' onClick={onClickCheckId}>중복확인</CheckIdBtn>
+              </IdBox>
+              <Label>Password</Label>
+              <Input ref={passwordRef} type='password' />
+              <Label>Email</Label>
+              <Input ref={emailRef} type='email' />
             </div>
-            <button className={style[`sign-up-button`]} onClick={onClickSignUp}>회원가입</button>
-          </form>
+            <SignUpBtn onClick={onClickSignUp}>회원가입</SignUpBtn>
+          </Form>
         </Wrap>
-      </Secsion>
-    </article>
+      </Section>
+    </Article>
   </>
 }
 

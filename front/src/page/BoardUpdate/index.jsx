@@ -2,8 +2,7 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
-import buttonStyle from "../../style/buttons.module.css";
-import style from "./style.module.css";
+import { Article, Content, Header, HeaderTitle, Title, UpdateButton } from "./style";
 
 const BoardUpdate = () => {
   const [form, setForm] = useState();
@@ -52,16 +51,16 @@ const BoardUpdate = () => {
   };
 
   return <>
-    <article className={style.article}>
-      <header className={style.header}>
-        <h2 className={style["header-title"]}>글 수정하기</h2>
-        <button className={`${buttonStyle["default-button"]} ${style.button}`} onClick={onClickUpdate}>수정</button>
-      </header>
+    <Article>
+      <Header>
+        <HeaderTitle>글 수정하기</HeaderTitle>
+        <UpdateButton onClick={onClickUpdate}>수정</UpdateButton>
+      </Header>
       <section>
-        <input ref={titleRef} className={style.title} placeholder='제목을 입력해주세요.' />
-        <span ref={contentRef} className={style.content} placeholder='내용을 입력하세요.' contentEditable></span>
+        <Title ref={titleRef} placeholder='제목을 입력해주세요.' />
+        <Content ref={contentRef} placeholder='내용을 입력하세요.' contentEditable></Content>
       </section>
-    </article>
+    </Article>
   </>;
 };
 

@@ -3,10 +3,10 @@ import axios from 'axios';
 import React, { useCallback, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import useSWR from 'swr';
-import style from './style.module.css';
-import buttonStyle from '../../style/buttons.module.css';
 import Comment from '../../component/BoardDetail/Comment';
 import { boardDetailFetcher, createComment } from './action';
+import { Button, ButtonWrap, CommentBox, Content, CountComment, Hr, Info, InfoLoginId, InfoTime, InfoWrap, Textarea, TitleWrap, Wrap } from './style';
+import { DefaultButton } from '../../style/buttons';
 
 const BoardDetail = () => {
   const params = useParams();
@@ -43,49 +43,41 @@ const BoardDetail = () => {
   if (isLoading) return <div>로딩중...</div>;
 
   return (
-    <div className={style.wrap}>
-      <div className={style.titleWrap}>
+    <Wrap>
+      <TitleWrap>
         <h2>{board.title}</h2>
-        <div className={style.buttonWrap}>
+        <ButtonWrap>
           <Link to={`/board/update/${params.boardId}`}>
-            <button className={`${buttonStyle['default-button']} ${style.button}`}>수정</button>
+            <Button>수정</Button>
           </Link>
-          <button className={`${buttonStyle['default-button']} ${style.button}`} onClick={onClickDeleteBoard(params.boardId)}>삭제</button>
-        </div>
-      </div>
-      <div className={style.innerWrap}>
-        <div className={style.info}>
-          <div className={style.infoId}>
-            {board.loginId}
-          </div>
-          <div className={style.infoTime}>
-            {board.createTimeStr}
-          </div>
-        </div>
-        <div className={style.countComment}>
-          댓글 {board?.comments?.length}
-        </div>
-      </div>
+          <Button onClick={onClickDeleteBoard(params.boardId)}>삭제</Button>
+        </ButtonWrap>
+      </TitleWrap>
+      <InfoWrap>
+        <Info>
+          <InfoLoginId>{board.loginId}</InfoLoginId>
+          <InfoTime>{board.createTimeStr}</InfoTime>
+        </Info>
+        <CountComment>댓글 {board?.comments?.length}</CountComment>
+      </InfoWrap>
 
       <hr />
 
-      <div className={style.content}>
-        {board.content}
-      </div>
+      <Content>{board.content}</Content>
 
       <section>
-        <hr className={style.hr} />
+        <Hr />
         <h3>댓글</h3>
-        <div className={style['section-box']}>
+        <CommentBox>
           {board?.comments?.map((comment, index) => <Comment key={index} boardLoginId={board.loginId} comment={comment} />)}
-        </div>
+        </CommentBox>
 
         <div>
-          <textarea className={style.textarea} maxLength='100' ref={commentRef} placeholder='댓글을 입력하세요' contentEditable suppressContentEditableWarning />
-          <button onClick={onClickCreateComment} className={buttonStyle['default-button']}>댓글달기</button>
+          <Textarea maxLength='100' ref={commentRef} placeholder='댓글을 입력하세요.' contentEditable suppressContentEditableWarning />
+          <DefaultButton onClick={onClickCreateComment} >댓글달기</DefaultButton>
         </div>
       </section>
-    </div>
+    </Wrap>
   )
 };
 

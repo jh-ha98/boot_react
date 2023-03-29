@@ -3,17 +3,15 @@ import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import Loading from '../../component/Loading';
-import buttonStyle from "../../style/buttons.module.css";
-import style from './style.module.css';
+import { DefaultButton } from '../../style/buttons';
 import homeImg from "../../resources/img/home.png";
 import boardImg from "../../resources/img/board.png";
 import menuImg from "../../resources/img/menu.png";
+import { Header, LogInButton, LogOutButton, MenuWrap, TopBarWrap, MenuImg, HomeImg, Section, InnerSection, StyledLink, Nav, BoardImg } from './style';
 
 const Home = () => {
   const [member, setMember] = useState();
   const [sideMenu, setSideMenu] = useState(true);
-  const show = style['side-bar'];
-  const hide = style['hide'];
 
   useEffect(() => {
     axios.get('/api/member/info')
@@ -45,39 +43,39 @@ const Home = () => {
 
   return (
     <>
-      <header className={style['main-header']}>
-        <div className={style['top-bar-wrap']}>
-          <div className={style.menuWrap}>
-            <img src={menuImg} className={style.menu} onClick={onClickMenu} />
+      <Header>
+        <TopBarWrap>
+          <MenuWrap>
+            <MenuImg src={menuImg} onClick={onClickMenu} />
             <div>logo</div>
-          </div>
+          </MenuWrap>
           <div>
             {member === null ?
               <Link to='/user/sign-in'>
-                <button className={`${buttonStyle['default-button']} ${style.login}`}>로그인</button>
+                <LogInButton>로그인</LogInButton>
               </Link> : ''}
             {member === null ?
               <Link to='/user/sign-up'>
-                <button className={buttonStyle['default-button']}>회원가입</button>
+                <DefaultButton>회원가입</DefaultButton>
               </Link> : ''}
             {!(member === null) ? member.loginId + '님 환영합니다' : ''}
-            {!(member === null) ? <button className={`${buttonStyle['default-button']} ${style.logout}`} onClick={onClickSignOut}>로그아웃</button> : ''}
+            {!(member === null) ? <LogOutButton onClick={onClickSignOut}>로그아웃</LogOutButton> : ''}
           </div>
-        </div>
-      </header>
-      <section className={style.wrap}>
-        <nav className={sideMenu ? show : hide}>
-          <Link to='/' className={style['side-link']}>
-            <img src={homeImg} className={style.home} /> 홈
-          </Link>
-          <Link to='/board/list' className={style['side-link']}>
-            <img src={boardImg} className={style.board} /> 게시판
-          </Link>
-        </nav>
-        <section className={style['inner-wrap']}>
+        </TopBarWrap>
+      </Header>
+      <Section>
+        <Nav className={sideMenu ? 'show' : 'hide'}>
+          <StyledLink to='/'>
+            <HomeImg src={homeImg} /> 홈
+          </StyledLink>
+          <StyledLink to='/board/list'>
+            <BoardImg src={boardImg} /> 게시판
+          </StyledLink>
+        </Nav>
+        <InnerSection>
           <Outlet />
-        </section>
-      </section>
+        </InnerSection>
+      </Section>
     </>
   );
 };

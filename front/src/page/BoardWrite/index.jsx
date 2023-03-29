@@ -3,8 +3,7 @@ import React from 'react';
 import { useState } from 'react';
 import { useRef } from 'react';
 import { Navigate } from 'react-router-dom';
-import buttonStyle from '../../style/buttons.module.css';
-import style from './style.module.css';
+import { Article, Content, Header, HeaderTitle, Title, WriteButton } from './style';
 
 const BoardWrite = () => {
   const [list, setList] = useState();
@@ -20,7 +19,7 @@ const BoardWrite = () => {
     };
 
     axios.post('/api/board/write', param)
-      .then((res) => {  
+      .then((res) => {
         const board = res.data.body;
         console.log(res);
         alert(res.data.msg);
@@ -39,16 +38,16 @@ const BoardWrite = () => {
   }
 
   return <>
-    <article className={style.article}>
-      <header className={style.header}>
-        <h2 className={style['header-title']}>글쓰기</h2>
-        <button className={`${buttonStyle['default-button']} ${style.button}`} onClick={onClicWrite}>등록</button>
-      </header>
+    <Article>
+      <Header>
+        <HeaderTitle>글쓰기</HeaderTitle>
+        <WriteButton onClick={onClicWrite}>등록</WriteButton>
+      </Header>
       <section>
-        <input ref={titleRef} className={style.title} placeholder='제목을 입력해주세요.' />
-        <span ref={contentRef} className={style.content} placeholder='내용을 입력하세요.' contentEditable></span>
+        <Title ref={titleRef} placeholder='제목을 입력해주세요.' />
+        <Content ref={contentRef} placeholder='내용을 입력하세요.' contentEditable></Content>
       </section>
-    </article>
+    </Article>
   </>;
 };
 
