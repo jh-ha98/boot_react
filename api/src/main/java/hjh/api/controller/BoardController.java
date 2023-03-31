@@ -68,8 +68,7 @@ public class BoardController {
   /** 게시글 삭제 */
   @DeleteMapping("/board/delete/{boardId}")
   public ResponseEntity<MessageBox<Boolean>> boardDelete(@PathVariable("boardId") Long boardId,
-      HttpServletRequest request)
-      throws Exception {
+      HttpServletRequest request) {
     MessageBox<Boolean> result = boardService.delete(boardId, request);
     MessageBoxValid valid = (MessageBoxValid) result.getValid();
     if (valid == MessageBoxValid.FALSE)

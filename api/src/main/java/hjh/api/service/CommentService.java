@@ -17,11 +17,10 @@ import hjh.api.repository.BoardRepository;
 import hjh.api.repository.CommentRepository;
 import hjh.api.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j // log 출력
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class CommentService {
 
   private final BoardRepository boardRepository;
@@ -51,13 +50,13 @@ public class CommentService {
   }
 
   /** 댓글 삭제 */
-  public MessageBox<Boolean> commentDelete(Long commentId, HttpServletRequest request) throws Exception {
+  @Transactional
+  public MessageBox<Boolean> commentDelete(Long commentId, HttpServletRequest request) {
     MemberInfo sessionMember = memberService.getSessionMember(request);
 
     if (sessionMember == null)
       return new MessageBox<>(MessageBoxValid.FALSE, "댓글은 인증된 사용자만 삭제할 수 있습니다.");
 
-    try {
       Comment findComment = commentRepository.findById(commentId).orElseThrow();
 
       if (!sessionMember.getLoginId().equals(findComment.getMember().getLoginId()))
@@ -65,14 +64,10 @@ public class CommentService {
 
       commentRepository.deleteById(commentId);
       return new MessageBox<>(MessageBoxValid.TRUE, "댓글이 삭제 되었습니다.");
-    } catch (Exception e) {
-      log.error("boardDelete error:", e);
-
-      return new MessageBox<>(MessageBoxValid.FALSE, "알수없는 에러.");
-    }
   }
 
   /** 댓글 수정 */
+  @Transactional
   public MessageBox<CommentInfo> commentUpdate(Long commentId, String comment, HttpServletRequest request) {
     MemberInfo sessionMember = memberService.getSessionMember(request);
 

@@ -17,11 +17,11 @@ const BoardDetail = () => {
   const onClickCreateComment = useCallback(() => {
     const param = {
       boardId: params.boardId,
-      comment: commentRef.current.value,
+      comment: commentRef.current.innerText,
     };
 
     createComment(mutate, param);
-    commentRef.current.value = '';
+    commentRef.current.innerText = '';
   }, [board]);
 
   const onClickDeleteBoard = (boardId) => (event) => {

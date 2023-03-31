@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,11 +18,10 @@ import hjh.api.domain.type.MessageBoxValid;
 import hjh.api.repository.BoardRepository;
 import hjh.api.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j // log 출력
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class BoardService {
 
   private final BoardRepository boardRepository;
@@ -66,13 +64,13 @@ public class BoardService {
   }
 
   /** 게시글 삭제 */
-  public MessageBox<Boolean> delete(Long boardId, HttpServletRequest request) throws Exception {
+  @Transactional
+  public MessageBox<Boolean> delete(Long boardId, HttpServletRequest request) {
     MemberInfo sessionMember = memberService.getSessionMember(request);
 
     if (sessionMember == null)
       return new MessageBox<>(MessageBoxValid.FALSE, "게시글은 인증된 사용자만 삭제할 수 있습니다.");
 
-    try {
       Board findBoard = boardRepository.findById(boardId).orElseThrow();
 
       if (!sessionMember.getLoginId().equals(findBoard.getMember().getLoginId()))
@@ -80,14 +78,10 @@ public class BoardService {
 
       boardRepository.deleteById(boardId);
       return new MessageBox<>(MessageBoxValid.TRUE, "게시글이 삭제 되었습니다.");
-    } catch (Exception e) {
-      log.error("boardDelete error:", e);
-
-      return new MessageBox<>(MessageBoxValid.FALSE, "알수없는 에러.");
-    }
   }
 
   /** 게시글 수정 */
+  @Transactional
   public MessageBox<BoardInfo> update(BoardUpdateForm form, HttpServletRequest request) {
     MemberInfo sessionMember = memberService.getSessionMember(request);
 
@@ -106,5 +100,4 @@ public class BoardService {
 
     return new MessageBox<>(MessageBoxValid.TRUE, "게시글이 수정 되었습니다.", boardInfo);
   }
-
 }
