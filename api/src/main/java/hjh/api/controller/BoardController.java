@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import hjh.api.domain.dto.board.BoardInfo;
@@ -34,8 +35,8 @@ public class BoardController {
 
   /** 게시판 리스트 */
   @GetMapping("/board/list")
-  public List<BoardInfo> boardList() {
-    return boardService.getBoard();
+  public List<BoardInfo> boardList(@RequestParam Integer page) {
+    return boardService.getBoard(page);
   }
 
   /** 게시글 상세페이지 */

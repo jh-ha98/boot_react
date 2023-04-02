@@ -13,7 +13,8 @@ const BoardList = () => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    axios.get('/api/board/list')
+    const params = { page: 0 };
+    axios.get('/api/board/list', { params })
       .then((res) => {
         const boardData = res.data;
         console.log(boardData);

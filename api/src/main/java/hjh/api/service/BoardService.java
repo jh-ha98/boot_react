@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,11 +30,16 @@ public class BoardService {
   private final MemberRepository memberRepository;
   private final MemberService memberService;
 
-  public List<BoardInfo> getBoard() {
+  public List<BoardInfo> getBoard(Integer page) {
     // 게시글이 최신순으로 정렬되도록 Sort추가
     // List<Board> boards = boardRepository.findAll(Sort.by(Sort.Direction.DESC, "createTime"));
     // List<Board> boards = boardRepository.findAllByOrderByCreateTimeDesc();
-    List<Board> boards = boardRepository.findWithMemberAll3();
+    PageRequest request = PageRequest.of(page, 2);
+    Page<Board> pageBoard = boardRepository.findWithMemberAll4(request);
+    List<Board> boards = pageBoard.getContent();
+    
+    System.out.println(pageBoard.isLast());
+
     return BoardInfo.generate(boards, false);
   }
 
