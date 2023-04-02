@@ -1,7 +1,18 @@
 /* eslint-disable */
 import axios from 'axios';
 
-export const boardDetailFetcher = url => axios.get(url).then(res => res.data);
+export const boardDetailFetcher = url => {
+  const boardId = url.split('/api/board/list/')[1];
+
+  return Promise.all([
+    axios.get(url).then(res => res.data),
+    axios.get(`/api/comment/list/${boardId}`).then(res => res.data)
+  ])
+    .then(([board, comments]) => {
+      board.comments = comments;
+      return board;
+    });
+};
 
 export const createComment = (mutate, param) => {
   axios.post('/api/comment/write', param)

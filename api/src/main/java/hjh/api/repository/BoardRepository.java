@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import hjh.api.domain.entity.Board;
 
@@ -24,6 +25,6 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
   List<Board> findWithMemberAll3();
 
   @Query("select b from Board b join fetch b.member m where b.id = :id")
-  Optional<Board> findByBoard();
+  Optional<Board> findWidthMemberById(@Param("id") Long id);
 
 }

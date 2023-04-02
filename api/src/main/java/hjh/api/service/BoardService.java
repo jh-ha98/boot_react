@@ -37,8 +37,8 @@ public class BoardService {
   }
 
   public BoardInfo getBoardDetail(Long boardId) {
-    Board findBoard = boardRepository.findById(boardId).orElseThrow();
-    return BoardInfo.generate(findBoard, true);
+    Board findBoard = boardRepository.findWidthMemberById(boardId).orElseThrow();
+    return BoardInfo.generate(findBoard, false);
   }
 
   /** 게시글 조회 */

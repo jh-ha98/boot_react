@@ -1,5 +1,7 @@
 package hjh.api.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
@@ -27,6 +29,15 @@ public class CommentService {
   private final CommentRepository commentRepository;
   private final MemberRepository memberRepository;
   private final MemberService memberService;
+
+  /** 댓글 리스트 조회 */
+  public List<CommentInfo> commentList(Long boardId) {
+    Board board = boardRepository.findById(boardId).orElseThrow();
+    List<Comment> comments = commentRepository.findWithMemberByBoard(board);
+    // List<CommentInfo> commentInfos = comments.stream().map(CommentInfo::generate).toList();
+    List<CommentInfo> commentInfos = comments.stream().map(comment -> CommentInfo.generate(comment)).toList();
+    return commentInfos;
+  }
 
   /** 댓글 저장 */
   @Transactional
@@ -57,13 +68,13 @@ public class CommentService {
     if (sessionMember == null)
       return new MessageBox<>(MessageBoxValid.FALSE, "댓글은 인증된 사용자만 삭제할 수 있습니다.");
 
-      Comment findComment = commentRepository.findById(commentId).orElseThrow();
+    Comment findComment = commentRepository.findById(commentId).orElseThrow();
 
-      if (!sessionMember.getLoginId().equals(findComment.getMember().getLoginId()))
-        return new MessageBox<>(MessageBoxValid.FALSE, "본인이 작성한 댓글만 삭제 할 수 있습니다.");
+    if (!sessionMember.getLoginId().equals(findComment.getMember().getLoginId()))
+      return new MessageBox<>(MessageBoxValid.FALSE, "본인이 작성한 댓글만 삭제 할 수 있습니다.");
 
-      commentRepository.deleteById(commentId);
-      return new MessageBox<>(MessageBoxValid.TRUE, "댓글이 삭제 되었습니다.");
+    commentRepository.deleteById(commentId);
+    return new MessageBox<>(MessageBoxValid.TRUE, "댓글이 삭제 되었습니다.");
   }
 
   /** 댓글 수정 */
