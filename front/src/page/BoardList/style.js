@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { DefaultButton } from '../../style/buttons';
 
 export const Wrap = styled.div`
 width: 100%;
@@ -80,4 +81,8 @@ left: .5rem;
 font-size: small;
 opacity: 0.4;
 margin: .5rem 0;
+`;
+
+export const PageButton = styled(DefaultButton)`
+width: 100%;
 `;

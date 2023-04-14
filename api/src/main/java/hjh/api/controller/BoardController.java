@@ -35,7 +35,7 @@ public class BoardController {
 
   /** 게시판 리스트 */
   @GetMapping("/board/list")
-  public List<BoardInfo> boardList(@RequestParam Integer page) {
+  public MessageBox<List<BoardInfo>> boardList(@RequestParam Integer page) {
     return boardService.getBoard(page);
   }
 

@@ -6,23 +6,31 @@ import { useState } from "react";
 import { Link } from 'react-router-dom';
 import { DefaultButton } from "../../style/buttons";
 import deleteImg from "../../resources/img/x.png";
-import { Content, DeleteButton, Info, ListBox, Serach, SerachInput, Title, Wrap } from "./style";
+import { Content, DeleteButton, Info, ListBox, PageButton, Serach, SerachInput, Title, Wrap } from "./style";
 
 const BoardList = () => {
   const [boardList, setBoardList] = useState([]);
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(0);
+  const [isLast, setIsLast] = useState(false);
 
-  useEffect(() => {
-    const params = { page: 0 };
+  const getBoardData = () => {
+    const params = { page };
     axios.get('/api/board/list', { params })
       .then((res) => {
-        const boardData = res.data;
-        console.log(boardData);
-        setBoardList(boardData);
+        const boardData = res.data.body;
+
+        setBoardList([...boardList, ...boardData]);
+        setPage(page + 1);
+        setIsLast(res.data.isLast);
       })
       .catch((error) => {
         console.error(error);
       })
+  };
+
+  useEffect(() => {
+    getBoardData();
   }, []);
 
   const onChangeSearch = (event) => {
@@ -43,9 +51,12 @@ const BoardList = () => {
           console.log(error);
           alert(error.response.data.msg);
         })
-    } else {
-      return;
     }
+  };
+
+  const onClickPage = () => {
+    if (isLast) return;
+    getBoardData();
   };
 
   const filteredList = useMemo(() =>
@@ -77,6 +88,8 @@ const BoardList = () => {
           </Info>
         </ListBox>
       )}
+      {/* <PageButton onClick={onClickPage} disabled={isLast ? true : false}>{isLast ? '더못봄' : '더보기'}</PageButton> */}
+      <PageButton onClick={onClickPage}>더보기</PageButton>
     </Wrap>
   );
 }

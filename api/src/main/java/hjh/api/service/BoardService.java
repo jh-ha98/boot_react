@@ -30,17 +30,15 @@ public class BoardService {
   private final MemberRepository memberRepository;
   private final MemberService memberService;
 
-  public List<BoardInfo> getBoard(Integer page) {
+  public MessageBox<List<BoardInfo>> getBoard(Integer page) {
     // 게시글이 최신순으로 정렬되도록 Sort추가
     // List<Board> boards = boardRepository.findAll(Sort.by(Sort.Direction.DESC, "createTime"));
     // List<Board> boards = boardRepository.findAllByOrderByCreateTimeDesc();
     PageRequest request = PageRequest.of(page, 2);
     Page<Board> pageBoard = boardRepository.findWithMemberAll4(request);
-    List<Board> boards = pageBoard.getContent();
-    
-    System.out.println(pageBoard.isLast());
+    List<BoardInfo> boardInfos = pageBoard.map(board -> BoardInfo.generate(board, false)).toList();
 
-    return BoardInfo.generate(boards, false);
+    return new MessageBox<>(MessageBoxValid.TRUE, pageBoard.isLast() ,boardInfos);
   }
 
   public BoardInfo getBoardDetail(Long boardId) {
