@@ -40,7 +40,7 @@ java -jar -Dspring.profiles.active=prod [파일명].jar &
 - `org.projectlombok:lombok` 
     - 다양한 어노테이션으로 코드 작성의 도움을 줍니다.
 - `org.springframework.boot:spring-boot-starter-data-jpa` 
-    - 스프링진영 대표 OOP.
+    - 스프링진영 대표 ORM.
 - `org.postgresql:postgresql` 
     - postgresql 데이터베이스 드라이버.
 - `org.springframework.boot:spring-boot-starter-validation`
