@@ -20,7 +20,7 @@ import lombok.ToString;
 public class Comment extends BaseEntity {
   @Id
   @GeneratedValue
-  @Column
+  @Column(name = "comment_id")
   private Long id;
 
   @Column(columnDefinition = "TEXT", nullable = false)

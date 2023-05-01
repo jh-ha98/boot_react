@@ -25,7 +25,7 @@ public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue
-    @Column
+    @Column(name = "member_id")
     private Long id;
 
     @Column(unique = true, nullable = false)
