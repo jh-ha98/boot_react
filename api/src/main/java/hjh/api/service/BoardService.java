@@ -34,7 +34,7 @@ public class BoardService {
     // 게시글이 최신순으로 정렬되도록 Sort추가
     // List<Board> boards = boardRepository.findAll(Sort.by(Sort.Direction.DESC, "createTime"));
     // List<Board> boards = boardRepository.findAllByOrderByCreateTimeDesc();
-    PageRequest request = PageRequest.of(page, 2);
+    PageRequest request = PageRequest.of(page, 10);
     Page<Board> pageBoard = boardRepository.findWithMemberAll4(request);
     List<BoardInfo> boardInfos = pageBoard.map(board -> BoardInfo.generate(board, false)).toList();
 
