@@ -59,7 +59,7 @@
     - `/etc/nginx/nginx.conf` 파일의 http 그룹 안에 다음의 server 그릅 코드를 작성합니다.  
     - location 그룹은 각각의 서버를 내가 원하는 url과 맵핑합니다.  
     - 수정후 `nginx -s reload` 명령어를 실행해 수정한 파일의 내용이 반영됩니다.
-    - proxy_cookie_path는 nginx의 프록시 서버 쿠키 설정 추가하는 설정 입니다.
+    - proxy_cookie_path는 nginx의 프록시 서버 쿠키 설정을 추가합니다.
     ```
     http {
         server {

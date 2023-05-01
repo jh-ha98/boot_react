@@ -1,6 +1,6 @@
 /* eslint-disable */
 import axios from "axios";
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Link } from 'react-router-dom';
@@ -12,60 +12,37 @@ import useSWR from "swr";
 const boardListFetcher = ([url, page]) => axios.get(url, { params: { page: page } }).then(res => res.data);
 
 const BoardList = () => {
-  const [boardList, setBoardList] = useState([]);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
-  const { data: messageBox } = useSWR(['/api/board/list', page], boardListFetcher);
-
-  useEffect(() => {
-    if (messageBox !== undefined)
-      setBoardList([...boardList, ...messageBox.body])
-  }, [messageBox]);
-
-  // const getBoardData = () => {
-  //   const params = { page };
-  //   axios.get('/api/board/list', { params })
-  //     .then((res) => {
-  //       const boardData = res.data.body;
-
-  //       setBoardList([...boardList, ...boardData]);
-  //       setPage(page + 1);
-  //       setIsLast(res.data.isLast);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     })
-  // };
-
-  // useEffect(() => {
-  //   getBoardData();
-  // }, []);
+  const { data: messageBox, mutate } = useSWR(['/api/board/list', page], boardListFetcher);
 
   const onChangeSearch = (event) => {
     event.preventDefault();
     setSearch(event.target.value);
   }
 
-  const onClickDelete = (boardId) => (event) => {
+  const onClickDelete = useCallback((boardId) => (event) => {
     event.preventDefault();
-    if (confirm('삭제하시겠습니까?')) {
-      axios.delete(`/api/board/delete/${boardId}`)
-        .then((res) => {
-          const newBoardList = [...boardList];
-          setBoardList(newBoardList.filter(boards => boards.boardId !== boardId));
-          alert(res.data.msg);
-        })
-        .catch((error) => {
-          console.log(error);
-          alert(error.response.data.msg);
-        })
-    }
-  };
+
+    if (!confirm('게시글을 삭제하시겠습니까?')) return;
+
+    const newBoardList = messageBox?.body?.filter(boards => boards.boardId !== boardId)
+    mutate(newBoardList, { revalidate: false });
+
+    axios.delete(`/api/board/delete/${boardId}`)
+      .then((res) => {
+        alert(res.data.msg);
+        mutate();
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error.response.data.msg);
+      })
+  }, [messageBox]);
 
   const onClickPage = () => {
     if (messageBox.isLast) return;
-    // getBoardData();
-    setPage(page + 1);
+    setPage((prev) => page + 1);
   };
 
   const filteredList = useMemo(() =>
