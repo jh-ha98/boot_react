@@ -29,7 +29,8 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(Arrays.asList(//
                 "http://127.0.0.1", //
                 "http://localhost", //
-                "http://hjh.divvirus.com"//
+                "http://hjh.divvirus.com",//
+                "https://hjh.divvirus.com"//
         ));
         configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
