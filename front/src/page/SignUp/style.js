@@ -12,10 +12,6 @@ justify-content: center;
 flex-direction: column;
 `;
 
-export const H2 = styled.h2`
-font-size: 2rem;
-`;
-
 export const Section = styled.section`
 display: flex;
 flex-direction: column;
