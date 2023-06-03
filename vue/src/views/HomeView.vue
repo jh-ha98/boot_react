@@ -14,7 +14,7 @@
           <button class=" default-button">회원가입</button>
         </RouterLink>
         {{ !(member === null) ? member.loginId + '님 환영합니다' : '' }}
-        <button v-if="!(member === null)" class="default-button logOut-button">로그아웃</button>
+        <button v-if="!(member === null)" class="default-button logOut-button" @click="onClickSignOut">로그아웃</button>
       </div>
     </div>
   </header>
@@ -47,16 +47,28 @@ const sideMenuIsShow = ref(true);
 
 onMounted(() => {
   axios.get('/api/member/info')
-    .catch((error) => error.response)
+    .catch((err) => err.response)
     .then((res) => {
       console.log(res.data?.body);
       member.value = res.data?.body;
     })
-    .catch((error) => console.log(error));
+    .catch((err) => console.log(err));
 });
 
 const onClickMenu = () => {
   sideMenuIsShow.value = !sideMenuIsShow.value;
+};
+
+const onClickSignOut = () => {
+  axios.delete('/api/member/sign-out')
+    .then((res) => {
+      console.log(res.data);
+      alert(res.data?.msg);
+      member.value = res.data?.body;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 };
 </script>
 

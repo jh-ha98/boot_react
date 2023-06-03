@@ -12,9 +12,9 @@
             <label>Password</label>
             <input type="password" class="input-box" v-model="password" />
             <label>Email</label>
-            <input type="email" class="input-box" />
+            <input type="email" class="input-box" v-model="email" />
           </div>
-          <button class="submit-button">회원가입</button>
+          <button class="submit-button" @click="onClickSignUp">회원가입</button>
         </form>
       </div>
     </section>
@@ -22,42 +22,48 @@
 </template>
 
 <script setup lang="ts">
+import router from '@/router';
 import axios from 'axios';
 import { ref } from 'vue';
 
 type Member = {
   loginId: string;
   password: string;
-  emil: string;
+  email: string;
 } | null;
 
 const memberRef = ref<Member>(null);
 const loginId = ref<string>('');
-const password = ref<string>();
-const emil = ref<string>();
+const password = ref<string>('');
+const email = ref<string>('');
 const checked = ref(false);
 
 const onClickSignUp = (e: Event) => {
   e.preventDefault();
 
   if (!checked.value) {
+    console.log(checked.value);
     alert("중복확인 먼저 해주세요.");
     return;
   }
 
-  const param = {
+  const params = {
     loginId: loginId.value,
     password: password.value,
-    emil: emil.value
+    email: email.value,
   };
 
-  console.log(param)
+  console.log(params)
 
-  axios.post('/api/member/sign-up', param)
+  axios.post('/api/member/sign-up', params)
     .then((res) => {
       const member = res.data.body;
       alert(res.data.msg);
       memberRef.value = member;
+
+      if (member) {
+        router.push({ path: '/sign-in', replace: true });
+      }
     })
     .catch((err) => {
       console.error(err);

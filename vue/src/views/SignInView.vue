@@ -17,6 +17,7 @@
 </template>
 
 <script setup lang="ts">
+import router from '@/router';
 import axios from 'axios';
 import { ref } from 'vue';
 
@@ -44,6 +45,10 @@ const onClickLogin = (e: Event) => {
       const member = res.data.body;
       alert(res.data.msg);
       memberRef.value = member;
+
+      if (member) {
+        router.push({ path: '/', replace: true });
+      }
     })
     .catch((err) => {
       console.error(err);
