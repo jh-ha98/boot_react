@@ -53,8 +53,6 @@ const onClickSignUp = (e: Event) => {
     email: email.value,
   };
 
-  console.log(params)
-
   axios.post('/api/member/sign-up', params)
     .then((res) => {
       const member = res.data.body;
@@ -62,7 +60,7 @@ const onClickSignUp = (e: Event) => {
       memberRef.value = member;
 
       if (member) {
-        router.push({ path: '/sign-in', replace: true });
+        router.push({ path: '/user/sign-in', replace: true });
       }
     })
     .catch((err) => {

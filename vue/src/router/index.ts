@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import HomeView from '../views/HomeView.vue';
+import BoardListView from '../views/BoardListView.vue';
+import BoardWriteView from '../views/BoardWriteView.vue';
 const SignInView = () => import('../views/SignInView.vue');
 const SignUpView = () => import('../views/SignUpView.vue');
 const router = createRouter({
@@ -9,17 +11,26 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-      // children: [{
-      //   path: '/board/list'
-      // }]
+      children: [
+        {
+          path: '/board/list',
+          name: 'board-list',
+          component: BoardListView,
+        },
+        {
+          path: '/board/write',
+          name: 'board-write',
+          component: BoardWriteView,
+        }
+      ]
     },
     {
-      path: '/sign-in',
+      path: '/user/sign-in',
       name: 'sign-in',
       component: SignInView,
     },
     {
-      path: '/sign-up',
+      path: '/user/sign-up',
       name: 'sign-up',
       component: SignUpView,
     }

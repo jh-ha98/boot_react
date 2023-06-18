@@ -6,11 +6,11 @@
         <div>logo</div>
       </div>
       <div>
-        <RouterLink v-if="member === null" to="/sign-in">
+        <RouterLink v-if="member === null" to="/user/sign-in">
           <button class="default-button login-button">로그인</button>
         </RouterLink>
 
-        <RouterLink v-if="member === null" to="/sign-up">
+        <RouterLink v-if="member === null" to="/user/sign-up">
           <button class=" default-button">회원가입</button>
         </RouterLink>
         {{ !(member === null) ? member.loginId + '님 환영합니다' : '' }}
@@ -18,7 +18,7 @@
       </div>
     </div>
   </header>
-  <section>
+  <section class="outer-section">
     <nav :class="{ show: sideMenuIsShow, hide: !sideMenuIsShow }">
       <RouterLink to="/" class="link">
         <img :src="homeImg" class="home-img" /> 홈
@@ -27,8 +27,9 @@
         <img :src="boardImg" class="board-img" /> 게시판
       </RouterLink>
     </nav>
-    홈
-    {{ member === null }}
+    <section class="innser-section">
+      <router-view></router-view>
+    </section>
   </section>
 </template>
 
@@ -114,10 +115,16 @@ header {
   margin-left: .3rem;
 }
 
-section {
+.outer-section {
   flex: 1;
   display: flex;
   overflow: hidden;
+}
+
+.innser-section {
+  flex: 1;
+  overflow: auto;
+  padding: .7rem;
 }
 
 nav {

@@ -9,6 +9,7 @@ const boardListFetcher = ([url, page]) => axios.get(url, { params: { page: page 
 
 const Page = ({ page, search, onClickDelete }) => {
   const { data: messageBox } = useSWR(['/api/board/list', page], boardListFetcher);
+  console.log(messageBox);
 
   const filteredList = useMemo(() =>
     messageBox?.body?.filter((board) => board.title.toLowerCase().includes(search.toLowerCase())), [messageBox, search]);
