@@ -1,19 +1,20 @@
 <template>
   <div class="wrap">
     <div class="search">
-      <input type="text" class="search-input" placeholder="검색" v-model="search" />
+      <!-- <input type="text" class="search-input" placeholder="검색" v-model="search" /> -->
+      <input type="text" class="search-input" placeholder="검색" :value="search" @input="updateSearch" />
     </div>
     <RouterLink to="/board/write">
       <button class="default-button">글 작성</button>
     </RouterLink>
-    <BoardCardView v-for="(board, index) in boards" :key="index" :board="board" @delete-board="deleteBoard" />
+    <BoardCardView v-for="(board, index) in filterBoardList" :key="index" :board="board" @delete-board="deleteBoard" />
     <button class="default-button page-button" @click="searchBoard" :disabled="isLast ? true : false">더보기</button>
   </div>
 </template>
 
 <script setup lang="ts">
 import axios from 'axios';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import BoardCardView from '@/components/BoardList/BoardCardView.vue';
 
 interface MessageBox<T> {
@@ -61,6 +62,14 @@ const deleteBoard = (boardId: number) => {
       alert(error.response.data.msg);
     });
 }
+
+//computed 캐싱기능
+const filterBoardList = computed(() => boards.value.filter((board) => board.title.toLowerCase().includes(search.value)));
+
+const updateSearch = (event: Event) => {
+  if (event.target instanceof HTMLInputElement)
+    search.value = event.target.value;
+};
 </script>
 
 <style scoped lang="scss">

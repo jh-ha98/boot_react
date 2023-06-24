@@ -2,6 +2,7 @@
 `Make A General`의 약자로 해당 프로젝트를 진행하며 스스로 발전하여 자신을 장군님으로 만들어보자는 취지로 만들어진 프로젝트입니다.
 - [학습내용 Spring](./docs/learning-spring.md)
 - [학습내용 React](./docs/learning-react.md)
+- [학습내용 Vue](./docs/learning-vue.md)
 - [학습내용 배포](./docs/learning-release.md)
 
 ## 목차
